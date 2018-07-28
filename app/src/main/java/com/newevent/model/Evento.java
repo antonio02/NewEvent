@@ -5,6 +5,8 @@ import java.util.Date;
 
 public class Evento {
 
+    private String uid;
+    private String donoUid;
     private String nome;
     private String tipo;
     private Local local;
@@ -38,6 +40,26 @@ public class Evento {
 
     public boolean isPublicado() {
         return publicado;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        if(this.uid == null){
+            this.uid = uid;
+        }
+    }
+
+    public String getDonoUid() {
+        return donoUid;
+    }
+
+    public void setDonoUid(String donoUid) {
+        if(this.donoUid == null){
+            this.donoUid = donoUid;
+        }
     }
 
     public void setNome(String nome) {

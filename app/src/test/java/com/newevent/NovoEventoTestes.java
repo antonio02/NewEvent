@@ -187,4 +187,20 @@ public class NovoEventoTestes {
         }
 
     }
+
+    @Test
+    public void deve_nao_alterar_o_uid_caso_o_setUid_seja_feito_mais_de_uma_vez(){
+        Evento evento = criarEventoValido();
+        evento.setUid("uid1");
+        evento.setUid("uid2");
+        assertEquals("uid1", evento.getUid());
+    }
+
+    @Test
+    public void deve_nao_alterar_o_donoUid_caso_o_setDonoUid_seja_feito_mais_de_uma_vez(){
+        Evento evento = criarEventoValido();
+        evento.setDonoUid("uid1");
+        evento.setDonoUid("uid2");
+        assertEquals("uid1", evento.getDonoUid());
+    }
 }

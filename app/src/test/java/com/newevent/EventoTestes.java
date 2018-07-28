@@ -1,5 +1,8 @@
 package com.newevent;
 
+import com.newevent.model.Evento;
+import com.newevent.model.StatusEvento;
+
 import org.junit.Before;
 import org.junit.Test;
 

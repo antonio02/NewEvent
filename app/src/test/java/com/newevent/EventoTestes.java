@@ -40,4 +40,29 @@ public class EventoTestes {
         }
     }
 
+    @Test
+    public void deve_recusar_as_criacao_de_um_novo_evento_com_nome_invalido(){
+        //Nome nulo
+        try{
+            Evento evento = new Evento(null,
+                    "Tipo: Palestra",
+                    "Local: Teresina/Pi",
+                    dataValida);
+            assertTrue(false);
+        } catch (Exception e){
+            assertTrue(true);
+        }
+
+        //Nome menor que 5 caracteres
+        try{
+            Evento evento = new Evento("ab",
+                    "Tipo: Palestra",
+                    "Local: Teresina/Pi",
+                    dataValida);
+            assertTrue(false);
+        } catch (Exception e){
+            assertTrue(true);
+        }
+    }
+
 }

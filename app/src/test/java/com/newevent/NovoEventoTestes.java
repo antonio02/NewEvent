@@ -2,7 +2,6 @@ package com.newevent;
 
 import com.newevent.model.Evento;
 import com.newevent.model.Local;
-import com.newevent.model.StatusEvento;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,17 +14,14 @@ import static org.junit.Assert.*;
 public class NovoEventoTestes {
 
     private Date dataValida;
-    private Date dataInvalida;
     private Local localValido;
 
     @Before
     public void setup(){
         Calendar data = Calendar.getInstance();
         long dataValida = data.getTimeInMillis() + 172800000;
-        long dataInvalida = data.getTimeInMillis() - 172800000;
 
         this.dataValida = new Date(dataValida);
-        this.dataInvalida = new Date(dataInvalida);
         this.localValido = new Local("Teresina", "Piaui",
                 "Avenida Miguel Rosa", "5051");
     }
@@ -35,8 +31,8 @@ public class NovoEventoTestes {
                 "Tipo: Palestra", localValido, dataValida);
     }
 
-    private Evento testarCriacao(String nome, String tipo, Local local, Date dataInicio){
-        return new Evento(nome, tipo, local, dataInicio);
+    private void testarCriacao(String nome, String tipo, Local local, Date dataInicio){
+        new Evento(nome, tipo, local, dataInicio);
     }
 
     @Test

@@ -6,23 +6,17 @@ public class Evento {
 
     private String nome;
     private String tipo;
-    private String local;
+    private Local local;
     private Date dataInicio;
     private StatusEvento status;
 
-    public Evento(String nome, String tipo, String local, Date dataInicio) {
+    public Evento(String nome, String tipo, Local local, Date dataInicio) {
         verificarCriacao(nome, tipo, local, dataInicio);
         this.nome = nome;
         this.tipo = tipo;
         this.local = local;
         this.dataInicio = dataInicio;
         this.status = StatusEvento.NOVO;
-    }
-
-    private void verificarCriacao(String nome, String tipo, String local, Date dataInicio) {
-        if(nome == null || nome.length() < 5){
-            throw new IllegalArgumentException("Nome invalido (nulo ou menor que 5 caracteres");
-        }
     }
 
     public String getNome() {
@@ -33,7 +27,7 @@ public class Evento {
         return tipo;
     }
 
-    public String getLocal() {
+    public Local getLocal() {
         return local;
     }
 
@@ -43,5 +37,23 @@ public class Evento {
 
     public StatusEvento getStatus() {
         return status;
+    }
+
+    private void verificarCriacao(String nome, String tipo, Local local, Date dataInicio) {
+        if(nome == null){
+            throw new IllegalArgumentException("Nome nulo");
+        }
+
+        if(tipo == null){
+            throw new IllegalArgumentException("Tipo do evento nulo");
+        }
+
+        if(local == null){
+            throw new IllegalArgumentException("Local do evento nulo");
+        }
+
+        if(dataInicio == null){
+            throw new IllegalArgumentException("Data de inicio nula");
+        }
     }
 }

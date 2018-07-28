@@ -1,6 +1,7 @@
 package com.newevent;
 
 import com.newevent.model.Evento;
+import com.newevent.model.Local;
 import com.newevent.model.StatusEvento;
 
 import org.junit.Before;
@@ -11,10 +12,11 @@ import java.util.Date;
 
 import static org.junit.Assert.*;
 
-public class EventoTestes {
+public class NovoEventoTestes {
 
     private Date dataValida;
     private Date dataInvalida;
+    private Local localValido;
 
     @Before
     public void setup(){
@@ -24,6 +26,8 @@ public class EventoTestes {
 
         this.dataValida = new Date(dataValida);
         this.dataInvalida = new Date(dataInvalida);
+        this.localValido = new Local("Teresina", "Piaui",
+                "Avenida Miguel Rosa", "5051");
     }
 
     @Test
@@ -31,7 +35,7 @@ public class EventoTestes {
         try{
             Evento evento = new Evento("Nome: Evento Teste",
                     "Tipo: Palestra",
-                    "Local: Teresina/Pi",
+                    localValido,
                     dataValida);
             assertEquals(StatusEvento.NOVO, evento.getStatus());
             assertTrue(true);
@@ -41,52 +45,46 @@ public class EventoTestes {
     }
 
     @Test
-    public void deve_recusar_a_criacao_de_um_novo_evento_com_nome_invalido_ou_nulo(){
-        //Nome nulo
+    public void deve_recusar_a_criacao_de_um_novo_evento_se_algum_parametro_for_nulo(){
+        //Nome Nulo
         try{
             Evento evento = new Evento(null,
                     "Tipo: Palestra",
-                    "Local: Teresina/Pi",
+                    localValido,
                     dataValida);
             assertTrue(false);
         } catch (Exception e){
             assertTrue(true);
         }
-
-        //Nome menor que 5 caracteres
-        try{
-            Evento evento = new Evento("ab",
-                    "Tipo: Palestra",
-                    "Local: Teresina/Pi",
-                    dataValida);
-            assertTrue(false);
-        } catch (Exception e){
-            assertTrue(true);
-        }
-    }
-
-    @Test
-    public void deve_recusar_a_criacao_de_um_novo_evento_com_tipo_invalido_ou_nulo(){
+        //Tipo Nulo
         try{
             Evento evento = new Evento("Nome: Evento Teste",
                     null,
-                    "Local: Teresina/Pi",
+                    localValido,
                     dataValida);
             assertTrue(false);
         } catch (Exception e){
             assertTrue(true);
         }
-
-        //Nome menor que 3 caracteres
+        //Local Nulo
         try{
-            Evento evento = new Evento("ab",
-                    "ew",
-                    "Local: Teresina/Pi",
+            Evento evento = new Evento(null,
+                    "Tipo: Palestra",
+                    null,
                     dataValida);
             assertTrue(false);
         } catch (Exception e){
             assertTrue(true);
         }
-
+        //Data Nula
+        try{
+            Evento evento = new Evento(null,
+                    "Tipo: Palestra",
+                    localValido,
+                    null);
+            assertTrue(false);
+        } catch (Exception e){
+            assertTrue(true);
+        }
     }
 }

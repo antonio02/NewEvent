@@ -39,21 +39,44 @@ public class Evento {
         return status;
     }
 
-    private void verificarCriacao(String nome, String tipo, Local local, Date dataInicio) {
-        if(nome == null){
-            throw new IllegalArgumentException("Nome nulo");
-        }
+    public void setNome(String nome) {
+        validarNome(nome);
+        this.nome = nome;
+    }
 
-        if(tipo == null){
+    public void setTipo(String tipo) {
+        validarTipo(tipo);
+        this.tipo = tipo;
+    }
+
+    private void validarNome(String nome){
+        if(nome == null || nome.length() < 6){
+            throw new IllegalArgumentException("Nome nulo ou menos de 6 caracteres");
+        }
+    }
+
+    private void validarTipo(String tipo){
+        if(tipo == null || tipo.length() < 5){
             throw new IllegalArgumentException("Tipo do evento nulo");
         }
+    }
 
+    private void validarLocal(Local local){
         if(local == null){
             throw new IllegalArgumentException("Local do evento nulo");
         }
+    }
 
+    private void validarDataInicio(Date dataInicio){
         if(dataInicio == null){
             throw new IllegalArgumentException("Data de inicio nula");
         }
+    }
+
+    private void verificarCriacao(String nome, String tipo, Local local, Date dataInicio) {
+        validarNome(nome);
+        validarTipo(tipo);
+        validarLocal(local);
+        validarDataInicio(dataInicio);
     }
 }

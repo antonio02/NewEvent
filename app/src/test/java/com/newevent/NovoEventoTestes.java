@@ -30,60 +30,94 @@ public class NovoEventoTestes {
                 "Avenida Miguel Rosa", "5051");
     }
 
+    private Evento criarEventoValido(){
+        return new Evento("Nome: Teste",
+                "Tipo: Palestra", localValido, dataValida);
+    }
+
+    private Evento testarCriacao(String nome, String tipo, Local local, Date dataInicio){
+        return new Evento(nome, tipo, local, dataInicio);
+    }
+
     @Test
     public void deve_aceitar_a_criacao_de_um_novo_evento_valido(){
-        try{
-            Evento evento = new Evento("Nome: Evento Teste",
-                    "Tipo: Palestra",
-                    localValido,
-                    dataValida);
+        try {
+            Evento evento = criarEventoValido();
             assertEquals(StatusEvento.NOVO, evento.getStatus());
-            assertTrue(true);
-        } catch (Exception e){
+        }catch (IllegalArgumentException e){
             assertTrue(false);
         }
     }
 
     @Test
-    public void deve_recusar_a_criacao_de_um_novo_evento_se_algum_parametro_for_nulo(){
-        //Nome Nulo
-        try{
-            Evento evento = new Evento(null,
-                    "Tipo: Palestra",
-                    localValido,
-                    dataValida);
-            assertTrue(false);
-        } catch (Exception e){
+    public void deve_recusar_a_criacao_caso_o_nome_seja_nulo_ou_menor_que_seis_caracteres(){
+        try {
+            testarCriacao(null, "Tipo: Palestra", localValido, dataValida);
+            assertTrue("Aceitou valor nulo", false);
+        }catch (IllegalArgumentException e){
             assertTrue(true);
         }
-        //Tipo Nulo
-        try{
-            Evento evento = new Evento("Nome: Evento Teste",
-                    null,
-                    localValido,
-                    dataValida);
-            assertTrue(false);
-        } catch (Exception e){
+
+        try {
+            testarCriacao("Test", "Tipo: Palestra", localValido, dataValida);
+            assertTrue("Aceitou nome menor que 6 caracteres", false);
+        }catch (IllegalArgumentException e){
             assertTrue(true);
         }
-        //Local Nulo
-        try{
-            Evento evento = new Evento(null,
-                    "Tipo: Palestra",
-                    null,
-                    dataValida);
-            assertTrue(false);
-        } catch (Exception e){
+    }
+
+    @Test
+    public void deve_recusar_o_setNome_caso_o_nome_seja_nulo_ou_menor_que_seis_caracteres(){
+        try {
+            Evento evento = criarEventoValido();
+            evento.setNome(null);
+            assertTrue("Aceitou valor nulo", false);
+        }catch (IllegalArgumentException e){
             assertTrue(true);
         }
-        //Data Nula
-        try{
-            Evento evento = new Evento(null,
-                    "Tipo: Palestra",
-                    localValido,
-                    null);
-            assertTrue(false);
-        } catch (Exception e){
+
+        try {
+            Evento evento = criarEventoValido();
+            evento.setNome("Abc");
+            assertTrue("Aceitou nome menor que 6 caracteres", false);
+        }catch (IllegalArgumentException e){
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void deve_recusar_a_criacao_caso_o_tipo_seja_nulo_ou_menor_que_cinco_caracteres(){
+        try {
+            testarCriacao("Nome: Teste", null, localValido, dataValida);
+            assertTrue("Aceitou valor nulo", false);
+        }catch (IllegalArgumentException e){
+            assertTrue(true);
+        }
+
+        try {
+            testarCriacao("Nome: Teste", "Tipo", localValido, dataValida);
+            assertTrue("Aceitou valor menor que 5 caracteres", false);
+        }catch (IllegalArgumentException e){
+            assertTrue(true);
+        }
+
+    }
+
+    @Test
+    public void deve_recusar_o_setTipo_caso_o_tipo_seja_nulo_ou_menor_que_cinco_caracteres(){
+        try {
+            Evento evento = criarEventoValido();
+            evento.setTipo(null);
+            assertTrue("Aceitou valor nulo", false);
+        }catch (IllegalArgumentException e){
+            assertTrue(true);
+        }
+
+        try {
+            Evento evento = criarEventoValido();
+            evento.setTipo("Abc");
+            assertTrue("Aceitou nome menor que 5 caracteres", false);
+        }catch (IllegalArgumentException e){
             assertTrue(true);
         }
     }

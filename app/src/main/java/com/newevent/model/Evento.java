@@ -11,11 +11,18 @@ public class Evento {
     private StatusEvento status;
 
     public Evento(String nome, String tipo, String local, Date dataInicio) {
+        verificarCriacao(nome, tipo, local, dataInicio);
         this.nome = nome;
         this.tipo = tipo;
         this.local = local;
         this.dataInicio = dataInicio;
         this.status = StatusEvento.NOVO;
+    }
+
+    private void verificarCriacao(String nome, String tipo, String local, Date dataInicio) {
+        if(nome == null || nome.length() < 5){
+            throw new IllegalArgumentException("Nome invalido (nulo ou menor que 5 caracteres");
+        }
     }
 
     public String getNome() {

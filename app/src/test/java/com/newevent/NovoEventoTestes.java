@@ -43,7 +43,7 @@ public class NovoEventoTestes {
     public void deve_aceitar_a_criacao_de_um_novo_evento_valido(){
         try {
             Evento evento = criarEventoValido();
-            assertEquals(StatusEvento.NOVO, evento.getStatus());
+            assertTrue(!evento.isPublicado());
         }catch (IllegalArgumentException e){
             assertTrue(false);
         }
@@ -120,5 +120,71 @@ public class NovoEventoTestes {
         }catch (IllegalArgumentException e){
             assertTrue(true);
         }
+    }
+
+    @Test
+    public void deve_recusar_a_criacao_caso_o_local_seja_nulo(){
+        try {
+            testarCriacao("Nome: Teste", "Tipo: Palestra", null, dataValida);
+            assertTrue("Aceitou valor nulo", false);
+        }catch (IllegalArgumentException e){
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void deve_recusar_o_setLocal_caso_o_local_seja_nulo(){
+        try {
+            Evento evento = criarEventoValido();
+            evento.setLocal(null);
+            assertTrue("Aceitou valor nulo", false);
+        }catch (IllegalArgumentException e){
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void deve_recusar_a_criacao_caso_a_data_de_inicio_seja_nula(){
+        try {
+            testarCriacao("Nome: Teste", "Tipo: Palestra", localValido, null);
+            assertTrue("Aceitou valor nulo", false);
+        }catch (IllegalArgumentException e){
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void deve_recusar_o_setDataInicio_caso_a_data_seja_nula(){
+        try {
+            Evento evento = criarEventoValido();
+            evento.setDataInicio(null);
+            assertTrue("Aceitou valor nulo", false);
+        }catch (IllegalArgumentException e){
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void deve_recusar_a_criacao_e_o_setDataInicio_caso_a_data_de_inicio_seja_menos_de_doze_horas_para_o_inicio_do_evento(){
+        try {
+            testarCriacao("Nome: Teste", "Tipo: Palestra",
+                    localValido, new Date(Calendar.getInstance().getTimeInMillis()));
+            assertTrue(
+                    "Aceitou uma data com menos de 12 horas para o inicio do evento",
+                    false);
+        }catch (IllegalArgumentException e){
+            assertTrue(true);
+        }
+
+        try {
+            Evento evento = criarEventoValido();
+            evento.setDataInicio(new Date(Calendar.getInstance().getTimeInMillis()));
+            assertTrue(
+                    "Aceitou uma data com menos de 12 horas para o inicio do evento",
+                    false);
+        }catch (IllegalArgumentException e){
+            assertTrue(true);
+        }
+
     }
 }

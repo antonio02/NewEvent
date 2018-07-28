@@ -1,5 +1,6 @@
 package com.newevent.model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Evento {
@@ -8,7 +9,7 @@ public class Evento {
     private String tipo;
     private Local local;
     private Date dataInicio;
-    private StatusEvento status;
+    protected boolean publicado;
 
     public Evento(String nome, String tipo, Local local, Date dataInicio) {
         verificarCriacao(nome, tipo, local, dataInicio);
@@ -16,7 +17,7 @@ public class Evento {
         this.tipo = tipo;
         this.local = local;
         this.dataInicio = dataInicio;
-        this.status = StatusEvento.NOVO;
+        this.publicado = false;
     }
 
     public String getNome() {
@@ -35,8 +36,8 @@ public class Evento {
         return dataInicio;
     }
 
-    public StatusEvento getStatus() {
-        return status;
+    public boolean isPublicado() {
+        return publicado;
     }
 
     public void setNome(String nome) {
@@ -47,6 +48,16 @@ public class Evento {
     public void setTipo(String tipo) {
         validarTipo(tipo);
         this.tipo = tipo;
+    }
+
+    public void setLocal(Local local) {
+        validarLocal(local);
+        this.local = local;
+    }
+
+    public void setDataInicio(Date dataInicio) {
+        validarDataInicio(dataInicio);
+        this.dataInicio = dataInicio;
     }
 
     private void validarNome(String nome){
@@ -68,7 +79,8 @@ public class Evento {
     }
 
     private void validarDataInicio(Date dataInicio){
-        if(dataInicio == null){
+        if(dataInicio == null ||
+                dataInicio.getTime() < (Calendar.getInstance().getTimeInMillis() + 43200000)){
             throw new IllegalArgumentException("Data de inicio nula");
         }
     }

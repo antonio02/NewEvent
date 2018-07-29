@@ -66,14 +66,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/cadastroConta_btn_cancelar"
-            style="?android:buttonBarButtonStyle"/>
+            style="?android:buttonBarButtonStyle"
+            android:onClick="cancelar"/>
 
         <Button
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/cadastroConta_btn_finalizar"
-            style="?android:buttonStyle"/>
+            style="?android:buttonStyle"
+            android:onClick="finalizar"/>
 
     </LinearLayout>
 

@@ -12,7 +12,7 @@ public class CadastroContaValidador {
 
     private CadastroContaValidador(){}
 
-    public int validar(String email, String senha, String senhaConfirmacao){
+    public static int validar(String email, String senha, String senhaConfirmacao){
         if(email == null || !Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             return EMAIL_INVALIDO;
         }

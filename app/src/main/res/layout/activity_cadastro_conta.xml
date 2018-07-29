@@ -16,6 +16,7 @@
         android:layout_marginStart="10dp">
 
         <EditText
+            android:id="@+id/cadastroConta_edtxt_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/cadastroConta_edtxt_email"
@@ -31,6 +32,7 @@
         android:layout_marginStart="10dp">
 
         <EditText
+            android:id="@+id/cadastroConta_edtxt_senha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/cadastroConta_edtxt_senha"
@@ -46,6 +48,7 @@
         android:layout_marginStart="10dp">
 
         <EditText
+            android:id="@+id/cadastroConta_edtxt_senhaConfirmacao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/cadastroConta_edtxt_confime_senha"

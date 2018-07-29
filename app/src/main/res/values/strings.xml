@@ -3,4 +3,9 @@
     <string name="inicio_btn_fazer_login">Fazer Login</string>
     <string name="inicio_btn_ver_eventos">Ver eventos</string>
     <string name="inicio_btn_criar_nova_conta">Criar nova conta</string>
+    <string name="cadastroConta_edtxt_email">Email</string>
+    <string name="cadastroConta_edtxt_senha">Senha</string>
+    <string name="cadastroConta_edtxt_confime_senha">Confirme a senha</string>
+    <string name="cadastroConta_btn_cancelar">Cancelar</string>
+    <string name="cadastroConta_btn_finalizar">Finalizar</string>
 </resources>

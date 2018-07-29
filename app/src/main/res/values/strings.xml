@@ -8,4 +8,5 @@
     <string name="cadastroConta_edtxt_confime_senha">Confirme a senha</string>
     <string name="cadastroConta_btn_cancelar">Cancelar</string>
     <string name="cadastroConta_btn_finalizar">Finalizar</string>
+    <string name="eventos_menu_logout">LogOut</string>
 </resources>

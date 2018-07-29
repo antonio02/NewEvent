@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".controller.CadastroConta" />
-        <activity android:name=".controller.Login"></activity>
+        <activity android:name=".controller.Login" />
+        <activity android:name=".controller.Eventos" />
     </application>
 
 </manifest>

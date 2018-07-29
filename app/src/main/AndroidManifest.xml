@@ -16,7 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.CadastroConta"></activity>
+        <activity android:name=".controller.CadastroConta" />
+        <activity android:name=".controller.Login"></activity>
     </application>
 
 </manifest>

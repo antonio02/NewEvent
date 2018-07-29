@@ -14,7 +14,8 @@
         android:text="@string/inicio_btn_fazer_login"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:onClick="abrirLogin"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

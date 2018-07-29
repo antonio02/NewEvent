@@ -12,7 +12,7 @@ public class CadastroContaValidador {
 
     private CadastroContaValidador(){}
 
-    public static int validar(String email, String senha, String senhaConfirmacao){
+    public static int validarNovaConta(String email, String senha, String senhaConfirmacao){
         if(email == null || !Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             return EMAIL_INVALIDO;
         }
@@ -27,6 +27,22 @@ public class CadastroContaValidador {
 
         if(!senha.equals(senhaConfirmacao)){
             return SENHAS_NAO_SAO_IGUAIS;
+        }
+
+        return VALIDO;
+    }
+
+    public static int validarLogin(String email, String senha){
+        if(email == null || !Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            return EMAIL_INVALIDO;
+        }
+
+        if(senha.length() < 6){
+            return SENHA_CURTA;
+        }
+
+        if(senha.contains(" ")){
+            return SENHA_COM_ESPACO;
         }
 
         return VALIDO;

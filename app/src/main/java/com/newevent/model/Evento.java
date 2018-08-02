@@ -2,7 +2,6 @@ package com.newevent.model;
 
 import com.newevent.utils.CriarEventoValidador;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class Evento {
@@ -103,7 +102,7 @@ public class Evento {
     }
 
     private void validarDataInicio(Date dataInicio){
-        if(!CriarEventoValidador.isValidoDataDoEvento(dataInicio)){
+        if(!CriarEventoValidador.isValidoDataInicioDoEvento(dataInicio)){
             throw new IllegalArgumentException("Data de inicio nula");
         }
     }

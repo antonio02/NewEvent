@@ -16,7 +16,7 @@
         android:layout_marginStart="10dp">
 
         <EditText
-            android:id="@+id/criarEvento_edtxt_nome"
+            android:id="@+id/edtxt_criar_evento_nome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nome do evento"
@@ -32,10 +32,11 @@
         android:layout_marginStart="10dp">
 
         <EditText
-            android:id="@+id/criarEvento_edtxt_tipo"
+            android:id="@+id/edtxt_criar_evento_tipo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Tipo de evento" />
+            android:hint="Tipo de evento"
+            android:inputType="textCapSentences"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -47,7 +48,7 @@
         android:layout_marginStart="10dp">
 
         <EditText
-            android:id="@+id/criarEvento_edtxt_local"
+            android:id="@+id/edtxt_criar_evento_local"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
@@ -64,11 +65,12 @@
         android:layout_marginStart="10dp">
 
         <EditText
-            android:id="@+id/criarEvento_edtxt_data"
+            android:id="@+id/edtxt_criar_evento_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Selecione a data do evento"
-            android:inputType="textPassword" />
+            android:clickable="true"
+            android:focusable="false"
+            android:hint="Selecione a data do evento" />
 
     </android.support.design.widget.TextInputLayout>
 

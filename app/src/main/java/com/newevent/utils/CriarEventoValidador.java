@@ -27,22 +27,14 @@ public class CriarEventoValidador {
         if(!isValidoLocalDoEvento(local)) {
             return LOCAL_DO_EVENTO_INVALIDO;
         }
-        if(!isValidoDataDoEvento(dataInicio)) {
+        if(!isValidoDataInicioDoEvento(dataInicio)) {
             return DATA_DO_EVENTO_INVALIDA;
         }
         return EVENTO_VALIDO;
     }
 
-    public static boolean isValidoDataDoEvento(Date dataInicio) {
-        if(dataInicio == null ||
-                dataInicio.getTime() < (Calendar.getInstance().getTimeInMillis() + 43200000)){
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean isValidoLocalDoEvento(Local local) {
-        if(local == null){
+    public static boolean isValidoNomeDoEvento(String nome) {
+        if(nome == null || nome.trim().length() < 6){
             return false;
         }
         return true;
@@ -55,8 +47,16 @@ public class CriarEventoValidador {
         return true;
     }
 
-    public static boolean isValidoNomeDoEvento(String nome) {
-        if(nome == null || nome.trim().length() < 6){
+    public static boolean isValidoLocalDoEvento(Local local) {
+        if(local == null){
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isValidoDataInicioDoEvento(Date dataInicio) {
+        if(dataInicio == null ||
+                dataInicio.getTime() < (Calendar.getInstance().getTimeInMillis() + 43200000)){
             return false;
         }
         return true;

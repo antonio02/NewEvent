@@ -1,5 +1,7 @@
 package com.newevent.model;
 
+import com.newevent.utils.CriarEventoValidador;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -83,26 +85,25 @@ public class Evento {
     }
 
     private void validarNome(String nome){
-        if(nome == null || nome.length() < 6){
-            throw new IllegalArgumentException("Nome nulo ou menos de 6 caracteres");
+        if(!CriarEventoValidador.isValidoNomeDoEvento(nome)){
+            throw new IllegalArgumentException("Nome nulo ou com menos de 6 caracteres");
         }
     }
 
     private void validarTipo(String tipo){
-        if(tipo == null || tipo.length() < 5){
+        if(!CriarEventoValidador.isValidoTipoDoEvento(tipo)){
             throw new IllegalArgumentException("Tipo do evento nulo");
         }
     }
 
     private void validarLocal(Local local){
-        if(local == null){
+        if(!CriarEventoValidador.isValidoLocalDoEvento(local)){
             throw new IllegalArgumentException("Local do evento nulo");
         }
     }
 
     private void validarDataInicio(Date dataInicio){
-        if(dataInicio == null ||
-                dataInicio.getTime() < (Calendar.getInstance().getTimeInMillis() + 43200000)){
+        if(!CriarEventoValidador.isValidoDataDoEvento(dataInicio)){
             throw new IllegalArgumentException("Data de inicio nula");
         }
     }

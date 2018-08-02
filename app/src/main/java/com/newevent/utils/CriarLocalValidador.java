@@ -26,19 +26,19 @@ public class CriarLocalValidador {
         return VALIDO;
     }
 
-    private static boolean isValidoEndereco(String endereco) {
+    public static boolean isValidoEndereco(String endereco) {
         return endereco != null && !endereco.trim().isEmpty();
     }
 
-    private static boolean isvalidoBairro(String bairro) {
+    public static boolean isvalidoBairro(String bairro) {
         return bairro != null && !bairro.trim().isEmpty();
     }
 
-    private static boolean isvalidoCidade(String cidade) {
+    public static boolean isvalidoCidade(String cidade) {
         return cidade != null && !cidade.trim().isEmpty();
     }
 
-    private static boolean isvalidoUf(String uf) {
+    public static boolean isvalidoUf(String uf) {
         return uf != null && uf.trim().length() == 2;
     }
 

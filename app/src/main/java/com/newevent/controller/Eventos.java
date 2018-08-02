@@ -66,6 +66,10 @@ public class Eventos extends AppCompatActivity {
     }
 
     public void abrirCriarEvento(View view) {
-        startActivity(new Intent(this, CriarEvento.class));
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            startActivity(new Intent(this, Login.class));
+        } else {
+            startActivity(new Intent(this, CriarEvento.class));
+        }
     }
 }

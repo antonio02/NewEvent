@@ -11,14 +11,13 @@ public class Evento {
     private String tipo;
     private Local local;
     private Date dataInicio;
-    protected boolean publicado;
+    private boolean publicado;
 
     public Evento(String nome, String tipo, Local local, Date dataInicio) {
-        verificarCriacao(nome, tipo, local, dataInicio);
-        this.nome = nome;
-        this.tipo = tipo;
-        this.local = local;
-        this.dataInicio = dataInicio;
+        this.nome = validarNome(nome);
+        this.tipo = validarTipo(tipo);
+        this.local = validarLocal(local);
+        this.dataInicio = validarDataInicio(dataInicio);
         this.publicado = false;
     }
 
@@ -63,54 +62,48 @@ public class Evento {
     }
 
     public void setNome(String nome) {
-        validarNome(nome);
-        this.nome = nome;
+        this.nome = validarNome(nome);
     }
 
     public void setTipo(String tipo) {
-        validarTipo(tipo);
-        this.tipo = tipo;
+        this.tipo = validarTipo(tipo);
     }
 
     public void setLocal(Local local) {
-        validarLocal(local);
-        this.local = local;
+        this.local = validarLocal(local);
     }
 
     public void setDataInicio(Date dataInicio) {
-        validarDataInicio(dataInicio);
-        this.dataInicio = dataInicio;
+        this.dataInicio = validarDataInicio(dataInicio);
     }
 
-    private void validarNome(String nome){
+    private String validarNome(String nome){
         if(nome == null || nome.length() < 6){
             throw new IllegalArgumentException("Nome nulo ou menos de 6 caracteres");
         }
+        return nome;
     }
 
-    private void validarTipo(String tipo){
+    private String validarTipo(String tipo){
         if(tipo == null || tipo.length() < 5){
             throw new IllegalArgumentException("Tipo do evento nulo");
         }
+        return tipo;
     }
 
-    private void validarLocal(Local local){
+    private Local validarLocal(Local local){
         if(local == null){
             throw new IllegalArgumentException("Local do evento nulo");
         }
+        return local;
     }
 
-    private void validarDataInicio(Date dataInicio){
+    private Date validarDataInicio(Date dataInicio){
         if(dataInicio == null ||
                 dataInicio.getTime() < (Calendar.getInstance().getTimeInMillis() + 43200000)){
-            throw new IllegalArgumentException("Data de inicio nula");
+            throw new IllegalArgumentException("Data de inicio nula ou menor que 12 horas para o inicio do evento");
         }
+        return dataInicio;
     }
 
-    private void verificarCriacao(String nome, String tipo, Local local, Date dataInicio) {
-        validarNome(nome);
-        validarTipo(tipo);
-        validarLocal(local);
-        validarDataInicio(dataInicio);
-    }
 }

@@ -1,5 +1,8 @@
 package com.newevent.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Local {
 
     private String endereco;
@@ -69,5 +72,15 @@ public class Local {
             throw new IllegalArgumentException("UF vazia ou invalido");
         }
         return uf;
+    }
+
+    public Map<String, Object> toMap(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("endereco", endereco);
+        map.put("bairro", bairro);
+        map.put("cidade", cidade);
+        map.put("uf", uf);
+        map.put("complemento", complemento);
+        return map;
     }
 }

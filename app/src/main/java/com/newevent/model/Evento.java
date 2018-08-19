@@ -2,6 +2,8 @@ package com.newevent.model;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Evento {
 
@@ -104,6 +106,17 @@ public class Evento {
             throw new IllegalArgumentException("Data de inicio nula ou menor que 12 horas para o inicio do evento");
         }
         return dataInicio;
+    }
+
+    public Map<String, Object> toMap(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("dono_uid", donoUid);
+        map.put("nome", nome);
+        map.put("tipo", tipo);
+        map.put("local", local.toMap());
+        map.put("data_inicio", dataInicio.getTime());
+        map.put("publicado", publicado);
+        return map;
     }
 
 }

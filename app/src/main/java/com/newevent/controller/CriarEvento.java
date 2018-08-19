@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.newevent.R;
 import com.newevent.model.Evento;
 import com.newevent.model.Local;
@@ -28,6 +30,8 @@ public class CriarEvento extends AppCompatActivity {
     private EditText mEditLocal;
     private EditText mEditDataInicio;
 
+    private DatabaseReference eventosBD;
+
     private Local local;
     private Evento novoEvento;
 
@@ -35,6 +39,8 @@ public class CriarEvento extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criar_evento);
+
+        eventosBD = FirebaseDatabase.getInstance().getReference("eventos");
 
         inicializarViews();
         atribuirEscutadorEmEditLocal();
@@ -69,9 +75,17 @@ public class CriarEvento extends AppCompatActivity {
 
             case CriarEventoValidador.EVENTO_VALIDO:
                 novoEvento = new Evento(nome, tipo, local, data);
-                finish();
+                salvarEvento();
+                break;
         }
 
+    }
+
+    private void salvarEvento(){
+        String uid = eventosBD.push().getKey();
+        assert uid != null;
+        eventosBD.child(uid).updateChildren(novoEvento.toMap());
+        finish();
     }
 
     public void cancelar(View view) {

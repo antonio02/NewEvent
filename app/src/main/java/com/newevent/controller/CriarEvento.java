@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.newevent.R;
@@ -22,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class CriarEvento extends AppCompatActivity {
 
@@ -82,8 +84,9 @@ public class CriarEvento extends AppCompatActivity {
     }
 
     private void salvarEvento(){
-        String uid = eventosBD.push().getKey();
+        String uid = novoEvento.getUid() == null ? eventosBD.push().getKey() : novoEvento.getUid();
         assert uid != null;
+        novoEvento.setDonoUid(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         eventosBD.child(uid).updateChildren(novoEvento.toMap());
         finish();
     }

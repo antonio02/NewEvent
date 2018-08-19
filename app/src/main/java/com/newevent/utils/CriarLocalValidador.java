@@ -1,6 +1,8 @@
 
 package com.newevent.utils;
 
+import com.newevent.model.Local;
+
 public class CriarLocalValidador {
 
     public static final int VALIDO = 0;
@@ -9,18 +11,17 @@ public class CriarLocalValidador {
     public static final int CIDADE_INVALIDO = 3;
     public static final int UF_INVALIDO = 4;
 
-    public static int validarLocal(String endereco, String bairro,
-                                   String cidade, String uf) {
-        if (!isValidoEndereco(endereco)) {
+    public static int validarLocal(Local local) {
+        if (!isValidoEndereco(local.getEndereco())) {
             return ENDERECO_INVALIDO;
         }
-        if (!isvalidoBairro(bairro)) {
+        if (!isValidoBairro(local.getBairro())) {
             return BAIRRO_INVALIDO;
         }
-        if (!isvalidoCidade(cidade)) {
+        if (!isValidoCidade(local.getCidade())) {
             return CIDADE_INVALIDO;
         }
-        if (!isvalidoUf(uf)) {
+        if (!isValidoUf(local.getUf())) {
             return UF_INVALIDO;
         }
         return VALIDO;
@@ -30,16 +31,20 @@ public class CriarLocalValidador {
         return endereco != null && !endereco.trim().isEmpty();
     }
 
-    public static boolean isvalidoBairro(String bairro) {
+    public static boolean isValidoBairro(String bairro) {
         return bairro != null && !bairro.trim().isEmpty();
     }
 
-    public static boolean isvalidoCidade(String cidade) {
+    public static boolean isValidoCidade(String cidade) {
         return cidade != null && !cidade.trim().isEmpty();
     }
 
-    public static boolean isvalidoUf(String uf) {
+    public static boolean isValidoUf(String uf) {
         return uf != null && uf.trim().length() == 2;
+    }
+
+    public static boolean isValidoComplemento(String complemento) {
+        return complemento != null && !complemento.trim().isEmpty();
     }
 
 }

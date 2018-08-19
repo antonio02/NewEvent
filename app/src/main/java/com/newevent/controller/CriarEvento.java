@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.newevent.R;
 import com.newevent.model.Evento;
 import com.newevent.model.Local;
+import com.newevent.utils.CriarEventoValidador;
 import com.newevent.utils.CriarLocalValidador;
 
 import java.text.ParseException;
@@ -45,12 +46,32 @@ public class CriarEvento extends AppCompatActivity {
         String tipo = mEditTipo.getText().toString();
         Date data = pegarData();
 
+        switch(CriarEventoValidador.validarNovoEvento(nome, tipo, local, data)){
+            case CriarEventoValidador.NOME_DO_EVENTO_INVALIDO:
+                mEditNome.setError("Nome vazio ou menor que 6 caracteres");
+                mEditNome.requestFocus();
+                break;
 
-        try {
-            novoEvento = new Evento(nome, tipo, local, data);
-        } catch (IllegalArgumentException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            case CriarEventoValidador.TIPO_DE_EVENTO_INVALIDO:
+                mEditTipo.setError("Tipo vazio ou menor que 5 caracteres");
+                mEditTipo.requestFocus();
+                break;
+
+            case CriarEventoValidador.LOCAL_DO_EVENTO_INVALIDO:
+                Toast.makeText(this, "Local do evento vazio",
+                        Toast.LENGTH_SHORT).show();
+                break;
+
+            case CriarEventoValidador.DATA_INICIO_DO_EVENTO_INVALIDA:
+                Toast.makeText(this, "Data vazia ou invalida",
+                        Toast.LENGTH_SHORT).show();
+                break;
+
+            case CriarEventoValidador.EVENTO_VALIDO:
+                novoEvento = new Evento(nome, tipo, local, data);
+                finish();
         }
+
     }
 
     public void cancelar(View view) {

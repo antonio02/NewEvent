@@ -46,4 +46,8 @@ public class Inicio extends AppCompatActivity {
         Intent it = new Intent(this, Login.class);
         startActivity(it);
     }
+
+    public void abrirEventos(View view) {
+        startActivity(new Intent(this, Eventos.class));
+    }
 }

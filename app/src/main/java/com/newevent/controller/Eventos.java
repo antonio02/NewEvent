@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.newevent.R;
@@ -62,5 +63,13 @@ public class Eventos extends AppCompatActivity {
             }
         });
         alert.create().show();
+    }
+
+    public void abrirCriarEvento(View view) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            startActivity(new Intent(this, Login.class));
+        } else {
+            startActivity(new Intent(this, CriarEvento.class));
+        }
     }
 }

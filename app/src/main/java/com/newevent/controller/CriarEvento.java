@@ -77,9 +77,7 @@ public class CriarEvento extends AppCompatActivity {
     private void inicializarLocal(String endereco, String bairro, String cidade,
                                   String uf, String complemento) {
         local = new Local(endereco, bairro, cidade, uf);
-        if (CriarLocalValidador.isValidoComplemento(complemento)) {
-            local.setComplemento(complemento);
-        }
+        local.setComplemento(complemento);
     }
 
     private void atribuirEscutadorEmEditLocal() {
@@ -107,22 +105,32 @@ public class CriarEvento extends AppCompatActivity {
                 String cidade = mEdtxtCidade.getText().toString();
                 String uf = mEdtxtUf.getText().toString();
 
-                if (!CriarLocalValidador.isValidoEndereco(endereco)) {
-                    mEdtxtEndereco.setError("Informe seu endereço");
-                    mEdtxtEndereco.requestFocus();
-                } else if (!CriarLocalValidador.isValidoBairro(bairro)) {
-                    mEdtxtBairro.setError("Informe seu bairro");
-                    mEdtxtBairro.requestFocus();
-                }else if (!CriarLocalValidador.isValidoCidade(cidade)) {
-                    mEdtxtCidade.setError("Informe sua cidade");
-                    mEdtxtCidade.requestFocus();
-                } else if (!CriarLocalValidador.isValidoUf(uf)) {
-                    mEdtxtUf.setError("Informe o estado");
-                    mEdtxtUf.requestFocus();
-                } else {
-                    inicializarLocal(endereco, bairro, cidade, uf, complemento);
-                    mEditLocal.setText(endereco);
-                    mDialog.dismiss();
+                switch (CriarLocalValidador.validarCriarLocal(endereco, bairro, cidade, uf)){
+                    case CriarLocalValidador.ENDERECO_INVALIDO:
+                        mEdtxtEndereco.setError("Informe seu endereço");
+                        mEdtxtEndereco.requestFocus();
+                        break;
+
+                    case CriarLocalValidador.BAIRRO_INVALIDO:
+                        mEdtxtBairro.setError("Informe seu bairro");
+                        mEdtxtBairro.requestFocus();
+                        break;
+
+                    case CriarLocalValidador.CIDADE_INVALIDO:
+                        mEdtxtCidade.setError("Informe sua cidade");
+                        mEdtxtCidade.requestFocus();
+                        break;
+
+                    case CriarLocalValidador.UF_INVALIDO:
+                        mEdtxtUf.setError("Informe o estado");
+                        mEdtxtUf.requestFocus();
+                        break;
+
+                    case CriarLocalValidador.VALIDO:
+                        inicializarLocal(endereco, bairro, cidade, uf, complemento);
+                        mEditLocal.setText(endereco);
+                        mDialog.dismiss();
+                        break;
                 }
             });
 

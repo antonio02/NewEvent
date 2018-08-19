@@ -2,7 +2,7 @@ package com.newevent.utils;
 
 import android.util.Patterns;
 
-public class CadastroContaValidador {
+public class ContaValidador {
 
     public static final int VALIDO = 0;
     public static final int EMAIL_INVALIDO = 1;
@@ -10,7 +10,7 @@ public class CadastroContaValidador {
     public static final int SENHA_CURTA = 3;
     public static final int SENHAS_NAO_SAO_IGUAIS = 4;
 
-    private CadastroContaValidador(){}
+    private ContaValidador(){}
 
     public static int validarNovaConta(String email, String senha, String senhaConfirmacao){
         if(email == null || !Patterns.EMAIL_ADDRESS.matcher(email).matches()){

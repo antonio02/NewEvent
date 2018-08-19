@@ -86,7 +86,7 @@ public class Evento {
 
     private String validarTipo(String tipo){
         if(tipo == null || tipo.length() < 5){
-            throw new IllegalArgumentException("Tipo do evento nulo");
+            throw new IllegalArgumentException("Tipo do evento nulo ou menos de 5 caracteres");
         }
         return tipo;
     }

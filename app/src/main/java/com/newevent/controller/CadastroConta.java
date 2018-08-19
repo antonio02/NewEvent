@@ -12,7 +12,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.newevent.R;
-import com.newevent.utils.CadastroContaValidador;
+import com.newevent.utils.ContaValidador;
 
 public class CadastroConta extends AppCompatActivity implements OnCompleteListener<AuthResult>{
 
@@ -41,33 +41,33 @@ public class CadastroConta extends AppCompatActivity implements OnCompleteListen
     }
 
     public void finalizar(View view) {
-        int resultado = CadastroContaValidador.validarNovaConta(
+        int resultado = ContaValidador.validarNovaConta(
                 edtxtEmail.getText().toString(),
                 edtxtSenha.getText().toString(),
                 edtxtConfirmeSenha.getText().toString());
 
         switch (resultado){
-            case CadastroContaValidador.EMAIL_INVALIDO:
+            case ContaValidador.EMAIL_INVALIDO:
                 edtxtEmail.setError("Email invalido");
                 edtxtEmail.requestFocus();
                 return;
 
-            case CadastroContaValidador.SENHA_CURTA:
+            case ContaValidador.SENHA_CURTA:
                 edtxtSenha.setError("Senha curta");
                 edtxtSenha.requestFocus();
                 return;
 
-            case CadastroContaValidador.SENHA_COM_ESPACO:
+            case ContaValidador.SENHA_COM_ESPACO:
                 edtxtSenha.setError("A senha não pode ter espaço");
                 edtxtSenha.requestFocus();
                 return;
 
-            case CadastroContaValidador.SENHAS_NAO_SAO_IGUAIS:
+            case ContaValidador.SENHAS_NAO_SAO_IGUAIS:
                 edtxtConfirmeSenha.setError("As senhas não sao iguais");
                 edtxtConfirmeSenha.requestFocus();
                 return;
 
-            case CadastroContaValidador.VALIDO:
+            case ContaValidador.VALIDO:
                 auth.createUserWithEmailAndPassword(edtxtEmail.getText().toString().trim(),
                         edtxtSenha.getText().toString().trim())
                         .addOnCompleteListener(this, this);

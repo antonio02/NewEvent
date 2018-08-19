@@ -11,40 +11,20 @@ public class CriarLocalValidador {
     public static final int CIDADE_INVALIDO = 3;
     public static final int UF_INVALIDO = 4;
 
-    public static int validarLocal(Local local) {
-        if (!isValidoEndereco(local.getEndereco())) {
+    public static int validarCriarLocal(String endereco, String bairro, String cidade, String uf) {
+        if (endereco != null && !endereco.trim().isEmpty()) {
             return ENDERECO_INVALIDO;
         }
-        if (!isValidoBairro(local.getBairro())) {
+        if (bairro != null && !bairro.trim().isEmpty()) {
             return BAIRRO_INVALIDO;
         }
-        if (!isValidoCidade(local.getCidade())) {
+        if (cidade != null && !cidade.trim().isEmpty()) {
             return CIDADE_INVALIDO;
         }
-        if (!isValidoUf(local.getUf())) {
+        if (uf != null && uf.trim().length() == 2) {
             return UF_INVALIDO;
         }
         return VALIDO;
-    }
-
-    public static boolean isValidoEndereco(String endereco) {
-        return endereco != null && !endereco.trim().isEmpty();
-    }
-
-    public static boolean isValidoBairro(String bairro) {
-        return bairro != null && !bairro.trim().isEmpty();
-    }
-
-    public static boolean isValidoCidade(String cidade) {
-        return cidade != null && !cidade.trim().isEmpty();
-    }
-
-    public static boolean isValidoUf(String uf) {
-        return uf != null && uf.trim().length() == 2;
-    }
-
-    public static boolean isValidoComplemento(String complemento) {
-        return complemento != null && !complemento.trim().isEmpty();
     }
 
 }

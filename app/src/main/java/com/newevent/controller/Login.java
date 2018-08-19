@@ -13,7 +13,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.newevent.R;
 import com.newevent.factory.FirebaseErrorStringFactory;
-import com.newevent.utils.CadastroContaValidador;
+import com.newevent.utils.ContaValidador;
 
 public class Login extends AppCompatActivity implements OnCompleteListener<AuthResult>{
 
@@ -39,24 +39,24 @@ public class Login extends AppCompatActivity implements OnCompleteListener<AuthR
     }
 
     public void finalizar(View view) {
-        int resultado = CadastroContaValidador.validarLogin(
+        int resultado = ContaValidador.validarLogin(
                 edtxtEmail.getText().toString(),
                 edtxtSenha.getText().toString());
 
         switch (resultado){
-            case CadastroContaValidador.EMAIL_INVALIDO:
+            case ContaValidador.EMAIL_INVALIDO:
                 edtxtEmail.setError("Email invalido");
                 edtxtEmail.requestFocus();
                 return;
-            case CadastroContaValidador.SENHA_CURTA:
+            case ContaValidador.SENHA_CURTA:
                 edtxtSenha.setError("Senha curta");
                 edtxtSenha.requestFocus();
                 return;
-            case CadastroContaValidador.SENHA_COM_ESPACO:
+            case ContaValidador.SENHA_COM_ESPACO:
                 edtxtSenha.setError("Senha com espaço");
                 edtxtSenha.requestFocus();
                 return;
-            case CadastroContaValidador.VALIDO:
+            case ContaValidador.VALIDO:
                 auth.signInWithEmailAndPassword(edtxtEmail.getText().toString().trim(),
                         edtxtSenha.getText().toString().trim())
                         .addOnCompleteListener(this, this);

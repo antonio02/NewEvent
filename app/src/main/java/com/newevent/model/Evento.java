@@ -78,14 +78,14 @@ public class Evento {
     }
 
     private String validarNome(String nome){
-        if(nome == null || nome.length() < 6){
+        if(nome == null || nome.trim().length() < 6){
             throw new IllegalArgumentException("Nome nulo ou menos de 6 caracteres");
         }
         return nome;
     }
 
     private String validarTipo(String tipo){
-        if(tipo == null || tipo.length() < 5){
+        if(tipo == null || tipo.trim().length() < 5){
             throw new IllegalArgumentException("Tipo do evento nulo ou menos de 5 caracteres");
         }
         return tipo;

@@ -50,7 +50,7 @@ public class Evento {
     }
 
     public void setUid(String uid) {
-        if(this.uid == null){
+        if(this.uid == null && uid != null){
             this.uid = uid;
         }
     }
@@ -60,7 +60,7 @@ public class Evento {
     }
 
     public void setDonoUid(String donoUid) {
-        if(this.donoUid == null){
+        if(this.donoUid == null && donoUid != null){
             this.donoUid = donoUid;
         }
     }
@@ -124,13 +124,13 @@ public class Evento {
     public static Evento mapToEvento(Map<String, Object> map){
         Evento evento = new Evento();
 
-        evento.uid = (String) map.get("uid");
-        evento.donoUid = (String) map.get("dono_uid");
+        evento.setUid((String) map.get("uid"));
+        evento.setDonoUid((String) map.get("dono_uid"));
 
-        evento.nome = validarNome((String) map.get("nome"));
-        evento.tipo = validarTipo((String) map.get("tipo"));
-        evento.local = validarLocal((Local) map.get("local"));
-        evento.dataInicio = validarDataInicio((Date) map.get("data_inicio"));
+        evento.setNome((String) map.get("nome"));
+        evento.setTipo((String) map.get("tipo"));
+        evento.setLocal((Local) map.get("local"));
+        evento.setDataInicio((Date) map.get("data_inicio"));
         evento.publicado = (boolean) map.get("publicado");
 
         return evento;

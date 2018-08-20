@@ -25,13 +25,14 @@ public class DataSnapshotTo {
     }
 
     private static Local local(DataSnapshot d) {
-        String endereco = (String) d.child("endereco").getValue();
-        String bairro = (String) d.child("bairro").getValue();
-        String cidade = (String) d.child("cidade").getValue();
-        String complemento = (String) d.child("complemento").getValue();
-        String uf = (String) d.child("uf").getValue();
-        Local local = new Local(endereco, bairro, cidade, uf);
-        local.setComplemento(complemento);
-        return local;
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("endereco", d.child("endereco").getValue());
+        map.put("bairro", d.child("bairro").getValue());
+        map.put("cidade", d.child("cidade").getValue());
+        map.put("uf", d.child("uf").getValue());
+        map.put("complemento", d.child("complemento").getValue());
+
+        return Local.mapToLocal(map);
     }
 }

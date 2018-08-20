@@ -15,6 +15,8 @@ public class Evento {
     private Date dataInicio;
     private boolean publicado;
 
+    private Evento(){}
+
     public Evento(String nome, String tipo, Local local, Date dataInicio) {
         this.nome = validarNome(nome);
         this.tipo = validarTipo(tipo);
@@ -79,28 +81,28 @@ public class Evento {
         this.dataInicio = validarDataInicio(dataInicio);
     }
 
-    private String validarNome(String nome){
+    private static String validarNome(String nome){
         if(nome == null || nome.trim().length() < 6){
             throw new IllegalArgumentException("Nome nulo ou menos de 6 caracteres");
         }
         return nome;
     }
 
-    private String validarTipo(String tipo){
+    private static String validarTipo(String tipo){
         if(tipo == null || tipo.trim().length() < 5){
             throw new IllegalArgumentException("Tipo do evento nulo ou menos de 5 caracteres");
         }
         return tipo;
     }
 
-    private Local validarLocal(Local local){
+    private static Local validarLocal(Local local){
         if(local == null){
             throw new IllegalArgumentException("Local do evento nulo");
         }
         return local;
     }
 
-    private Date validarDataInicio(Date dataInicio){
+    private static Date validarDataInicio(Date dataInicio){
         if(dataInicio == null ||
                 dataInicio.getTime() < (Calendar.getInstance().getTimeInMillis() + 43200000)){
             throw new IllegalArgumentException("Data de inicio nula ou menor que 12 horas para o inicio do evento");
@@ -117,6 +119,21 @@ public class Evento {
         map.put("data_inicio", dataInicio.getTime());
         map.put("publicado", publicado);
         return map;
+    }
+
+    public static Evento mapToEvento(Map<String, Object> map){
+        Evento evento = new Evento();
+
+        evento.uid = (String) map.get("uid");
+        evento.donoUid = (String) map.get("dono_uid");
+
+        evento.nome = validarNome((String) map.get("nome"));
+        evento.tipo = validarTipo((String) map.get("tipo"));
+        evento.local = validarLocal((Local) map.get("local"));
+        evento.dataInicio = validarDataInicio((Date) map.get("data_inicio"));
+        evento.publicado = (boolean) map.get("publicado");
+
+        return evento;
     }
 
 }

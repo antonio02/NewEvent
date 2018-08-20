@@ -2,9 +2,10 @@ package com.newevent.controller;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -181,13 +182,21 @@ public class CriarEvento extends AppCompatActivity {
             int mAno = calendario.get(Calendar.YEAR);
             int mMes = calendario.get(Calendar.MONTH);
             int mDia = calendario.get(Calendar.DAY_OF_MONTH);
+            int mHora = calendario.get(Calendar.HOUR);
+            int mMinuto = calendario.get(Calendar.MINUTE);
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                    (view1, hour, minute) -> {
+                        calendario.set(Calendar.HOUR, hour);
+                        calendario.set(Calendar.MINUTE, minute);
+                        mEditDataInicio.setText(new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
+                                Locale.getDefault()).format(calendario.getTime()));
+                    }, mHora, mMinuto, true);
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                     (datePicker, year, month, day) -> {
                         calendario.set(year, month, day);
-                        mEditDataInicio.setText(new SimpleDateFormat("dd - MMMM - yyyy" ,
-                                Locale.getDefault())
-                                .format(calendario.getTime()));
+                        timePickerDialog.show();
                     }, mAno, mMes, mDia);
 
 //            Definir data mínima a ser escolhida, sendo essa a data atual.

@@ -81,28 +81,28 @@ public class Evento {
         this.dataInicio = validarDataInicio(dataInicio);
     }
 
-    private static String validarNome(String nome){
+    public static String validarNome(String nome){
         if(nome == null || nome.trim().length() < 6){
             throw new IllegalArgumentException("Nome nulo ou menos de 6 caracteres");
         }
         return nome;
     }
 
-    private static String validarTipo(String tipo){
+    public static String validarTipo(String tipo){
         if(tipo == null || tipo.trim().length() < 5){
             throw new IllegalArgumentException("Tipo do evento nulo ou menos de 5 caracteres");
         }
         return tipo;
     }
 
-    private static Local validarLocal(Local local){
+    public static Local validarLocal(Local local){
         if(local == null){
             throw new IllegalArgumentException("Local do evento nulo");
         }
         return local;
     }
 
-    private static Date validarDataInicio(Date dataInicio){
+    public static Date validarDataInicio(Date dataInicio){
         if(dataInicio == null ||
                 dataInicio.getTime() < (Calendar.getInstance().getTimeInMillis() + 43200000)){
             throw new IllegalArgumentException("Data de inicio nula ou menor que 12 horas para o inicio do evento");

@@ -64,28 +64,28 @@ public class Local {
         this.complemento = complemento;
     }
 
-    private static String validarEndereco(String endereco){
+    public static String validarEndereco(String endereco){
         if(endereco == null || endereco.trim().isEmpty()){
             throw new IllegalArgumentException("Endereço vazio");
         }
         return endereco;
     }
 
-    private static String validarBairro(String bairro){
+    public static String validarBairro(String bairro){
         if(bairro == null || bairro.trim().isEmpty()){
             throw new IllegalArgumentException("Bairro vazio");
         }
         return bairro;
     }
 
-    private static String validarCidade(String cidade){
+    public static String validarCidade(String cidade){
         if(cidade == null || cidade.trim().isEmpty()){
             throw new IllegalArgumentException("Cidade vazia");
         }
         return cidade;
     }
 
-    private static String validarUF(String uf){
+    public static String validarUF(String uf){
         if(uf == null || uf.trim().contains(" ") || uf.trim().length() != 2){
             throw new IllegalArgumentException("UF vazia ou invalido");
         }

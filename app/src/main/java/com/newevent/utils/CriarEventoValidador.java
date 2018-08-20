@@ -1,5 +1,6 @@
 package com.newevent.utils;
 
+import com.newevent.model.Evento;
 import com.newevent.model.Local;
 
 import java.util.Calendar;
@@ -18,19 +19,30 @@ public class CriarEventoValidador {
 
     public static int validarNovoEvento(String nome, String tipo, Local local, Date dataInicio) {
 
-        if(nome == null || nome.trim().length() < 6) {
+        try {
+            Evento.validarNome(nome);
+        } catch (IllegalArgumentException e){
             return NOME_DO_EVENTO_INVALIDO;
         }
-        if(tipo == null || tipo.trim().length() < 5) {
+
+        try {
+            Evento.validarTipo(tipo);
+        } catch (IllegalArgumentException e){
             return TIPO_DE_EVENTO_INVALIDO;
         }
-        if(local == null) {
+
+        try {
+            Evento.validarLocal(local);
+        } catch (IllegalArgumentException e){
             return LOCAL_DO_EVENTO_INVALIDO;
         }
-        if(dataInicio == null ||
-                dataInicio.getTime() < (Calendar.getInstance().getTimeInMillis() + 43200000)) {
+
+        try {
+            Evento.validarDataInicio(dataInicio);
+        } catch (IllegalArgumentException e){
             return DATA_INICIO_DO_EVENTO_INVALIDA;
         }
+        
         return EVENTO_VALIDO;
     }
 

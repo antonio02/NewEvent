@@ -12,18 +12,31 @@ public class CriarLocalValidador {
     public static final int UF_INVALIDO = 4;
 
     public static int validarCriarLocal(String endereco, String bairro, String cidade, String uf) {
-        if (endereco == null || endereco.trim().isEmpty()) {
+
+        try {
+            Local.validarEndereco(endereco);
+        } catch (IllegalArgumentException e){
             return ENDERECO_INVALIDO;
         }
-        if (bairro == null || bairro.trim().isEmpty()) {
+
+        try {
+            Local.validarBairro(bairro);
+        } catch (IllegalArgumentException e){
             return BAIRRO_INVALIDO;
         }
-        if (cidade == null || cidade.trim().isEmpty()) {
+
+        try {
+            Local.validarCidade(cidade);
+        } catch (IllegalArgumentException e){
             return CIDADE_INVALIDO;
         }
-        if (uf == null || uf.trim().length() != 2) {
+
+        try {
+            Local.validarUF(endereco);
+        } catch (IllegalArgumentException e){
             return UF_INVALIDO;
         }
+
         return VALIDO;
     }
 

@@ -3,7 +3,6 @@ package com.newevent.utils;
 import com.newevent.model.Evento;
 import com.newevent.model.Local;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class CriarEventoValidador {
@@ -42,7 +41,7 @@ public class CriarEventoValidador {
         } catch (IllegalArgumentException e){
             return DATA_INICIO_DO_EVENTO_INVALIDA;
         }
-        
+
         return EVENTO_VALIDO;
     }
 

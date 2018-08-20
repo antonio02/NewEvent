@@ -39,7 +39,7 @@ public class Local {
     }
 
     public void setComplemento(String complemento) {
-        if(complemento.trim().isEmpty()){
+        if(complemento == null || complemento.trim().isEmpty()){
             this.complemento = null;
             return;
         }

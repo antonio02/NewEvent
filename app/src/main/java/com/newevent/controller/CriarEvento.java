@@ -98,7 +98,7 @@ public class CriarEvento extends AppCompatActivity {
 
     private Date pegarData() {
         try {
-            SimpleDateFormat formato = new SimpleDateFormat("dd - MMMM - yyyy",
+            SimpleDateFormat formato = new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
                     Locale.getDefault());
             return formato.parse(mEditDataInicio.getText().toString());
         } catch (ParseException e) {

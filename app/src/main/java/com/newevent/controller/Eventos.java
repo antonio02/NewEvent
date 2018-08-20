@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,8 +14,11 @@ import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.newevent.R;
+import com.newevent.adapter.EventosRvAdapter;
 
 public class Eventos extends AppCompatActivity {
+
+    private RecyclerView rv;
 
     FirebaseAuth auth;
 
@@ -26,6 +31,9 @@ public class Eventos extends AppCompatActivity {
 
     private void biding() {
         auth = FirebaseAuth.getInstance();
+        rv = findViewById(R.id.rv_eventos);
+        rv.setAdapter(new EventosRvAdapter());
+        rv.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override

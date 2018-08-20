@@ -32,7 +32,7 @@ public class CriarLocalValidador {
         }
 
         try {
-            Local.validarUF(endereco);
+            Local.validarUF(uf);
         } catch (IllegalArgumentException e){
             return UF_INVALIDO;
         }

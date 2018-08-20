@@ -53,7 +53,7 @@ public class Local {
     }
 
     public void setUf(String uf) {
-        this.uf = validarUF(uf);
+        this.uf = validarUF(uf).toUpperCase();
     }
 
     public void setComplemento(String complemento) {

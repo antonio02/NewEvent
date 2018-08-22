@@ -1,5 +1,7 @@
 package com.newevent.model;
 
+import com.newevent.utils.UidUtil;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -78,19 +80,19 @@ public class Atividade {
     }
 
     public void setUid(String uid) {
-        if(this.uid == null && uid != null && !uid.trim().isEmpty()){
+        if(this.uid == null && UidUtil.isValido(uid)){
             this.uid = uid.trim();
         }
     }
 
     public void setDonoUid(String donoUid) {
-        if(this.donoUid == null && donoUid != null && !donoUid.trim().isEmpty()){
+        if(this.donoUid == null && UidUtil.isValido(donoUid)){
             this.donoUid = donoUid.trim();
         }
     }
 
     public void setEventoUid(String eventoUid) {
-        if(this.eventoUid == null && eventoUid != null && !eventoUid.trim().isEmpty()){
+        if(this.eventoUid == null && UidUtil.isValido(eventoUid)){
             this.eventoUid = eventoUid.trim();
         }
     }
@@ -179,7 +181,7 @@ public class Atividade {
         Map<String, Object> map = new HashMap<>();
 
         map.put("dono_uid", donoUid);
-        map.put("evento_uid", (new HashMap<String, Object>()).put(eventoUid, true));
+        map.put("evento_uid", eventoUid);
 
         map.put("nome", nome);
         map.put("tipo", tipo);
@@ -196,6 +198,7 @@ public class Atividade {
         Atividade atividade = new Atividade();
 
         atividade.setUid((String) map.get("uid"));
+        atividade.setDonoUid((String) map.get("dono_uid"));
         atividade.setEventoUid((String) map.get("evento_uid"));
 
         atividade.setNome((String) map.get("nome"));

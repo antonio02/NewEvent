@@ -1,5 +1,7 @@
 package com.newevent.model;
 
+import com.newevent.utils.UidUtil;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +68,7 @@ public class Evento {
     }
 
     public void setUid(String uid) {
-        if(this.uid == null && uid != null){
+        if(this.uid == null && UidUtil.isValido(uid)){
             this.uid = uid;
         }
     }
@@ -76,7 +78,7 @@ public class Evento {
     }
 
     public void setDonoUid(String donoUid) {
-        if(this.donoUid == null && donoUid != null){
+        if(this.donoUid == null && UidUtil.isValido(donoUid)){
             this.donoUid = donoUid;
         }
     }

@@ -7,7 +7,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.newevent.utils.DataSnapshotToEvento;
+import com.newevent.dao.evento.interfaces.GetEventoRealtimeListener;
+import com.newevent.utils.DataSnapToEvento;
+import com.newevent.utils.UidUtil;
 
 public class GetEventoRealtime implements ValueEventListener{
 
@@ -15,9 +17,13 @@ public class GetEventoRealtime implements ValueEventListener{
     private DatabaseReference eventoBD;
 
     public GetEventoRealtime(String eventoUid, GetEventoRealtimeListener listener){
-        eventoBD = FirebaseDatabase.getInstance().getReference("eventos").child(eventoUid);
-        eventoBD.addValueEventListener(this);
-        this.listener = listener;
+        if(UidUtil.isValido(eventoUid)) {
+            eventoBD = FirebaseDatabase.getInstance()
+                    .getReference("eventos")
+                    .child(eventoUid);
+            eventoBD.addValueEventListener(this);
+            this.listener = listener;
+        }
     }
 
     public void stop(){
@@ -27,7 +33,7 @@ public class GetEventoRealtime implements ValueEventListener{
     @Override
     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         if(dataSnapshot.exists()){
-            listener.onUpdate(DataSnapshotToEvento.get(dataSnapshot));
+            listener.onUpdate(DataSnapToEvento.get(dataSnapshot));
         } else {
             listener.onDelete();
         }

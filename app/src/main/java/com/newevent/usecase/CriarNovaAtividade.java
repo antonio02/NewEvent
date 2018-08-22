@@ -25,6 +25,7 @@ public class CriarNovaAtividade {
 
     public CriarNovaAtividade(){
         atividadeSalvar = new AtividadeSalvarAtualizar();
+        eventoAtualizar = new EventoSalvarAtualizar();
     }
 
     public int criar(Evento evento, String nome, String tipo, Double valor,

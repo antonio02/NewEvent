@@ -2,14 +2,15 @@ package com.newevent.controller;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.newevent.R;
+import com.newevent.dao.evento.GetEventoRealtime;
+import com.newevent.dao.evento.GetEventoRealtimeListener;
 import com.newevent.model.Evento;
 import com.newevent.usecase.CriarNovaAtividade;
 
@@ -28,7 +29,7 @@ public class CriarAtividade extends AppCompatActivity {
     private EditText dataInicioAtividade;
     private EditText dataFimAtividade;
 
-    private Evento evento;
+    private Evento mEvento;
     private CriarNovaAtividade criarAtividade;
 
 
@@ -38,9 +39,28 @@ public class CriarAtividade extends AppCompatActivity {
         setContentView(R.layout.activity_criar_atividade);
 
         criarAtividade = new CriarNovaAtividade();
-        inicializarViews();
-        atribuirEscutadorEmEditData();
 
+        pegarEvento();
+        inicializarViews();
+        atribuirEscutadorEmEditData(dataInicioAtividade);
+        atribuirEscutadorEmEditData(dataFimAtividade);
+
+    }
+
+    private Evento pegarEvento() {
+        String eventoUid = getIntent().getStringExtra("eventoUid");
+        new GetEventoRealtime(eventoUid, new GetEventoRealtimeListener() {
+            @Override
+            public void onUpdate(Evento evento) {
+                mEvento = evento;
+            }
+
+            @Override
+            public void onDelete() {
+
+            }
+        });
+        return null;
     }
 
     public void finalizar(View view) {
@@ -51,10 +71,12 @@ public class CriarAtividade extends AppCompatActivity {
         Date dataInicio = pegarData();
         Date dataFim = pegarData();
 
-        switch (criarAtividade.criar(evento, nome, tipo, valor, dataInicio,
+        switch (criarAtividade.criar(mEvento, nome, tipo, valor, dataInicio,
                 dataFim, maxInscricoes)) {
 
             case CriarNovaAtividade.SALVO:
+                Toast.makeText(this, "Atividade inclusa ao evento",
+                        Toast.LENGTH_SHORT).show();
                 finish();
                 break;
 
@@ -73,6 +95,11 @@ public class CriarAtividade extends AppCompatActivity {
             valorAtividade.requestFocus();
             break;
 
+            case CriarNovaAtividade.MAX_INCRICOES_INVALIDO:
+                maxInscricoesAtividade.setError("Numero de inscrições menor que 1");
+                maxInscricoesAtividade.requestFocus();
+                break;
+
             case CriarNovaAtividade.DATA_INICIO_INVALIDA:
             dataInicioAtividade.setError("Data de Inicio nula");
             dataInicioAtividade.requestFocus();
@@ -81,11 +108,6 @@ public class CriarAtividade extends AppCompatActivity {
             case CriarNovaAtividade.DATA_TERMINO_INVALIDA:
             dataFimAtividade.setError("Data de Termino nula");
             dataFimAtividade.requestFocus();
-            break;
-
-            case CriarNovaAtividade.MAX_INCRICOES_INVALIDO:
-            maxInscricoesAtividade.setError("Numero de inscrições menor que 1");
-            maxInscricoesAtividade.requestFocus();
             break;
 
         }
@@ -122,9 +144,9 @@ public class CriarAtividade extends AppCompatActivity {
         }
     }
 
-    private void atribuirEscutadorEmEditData() {
+    private void atribuirEscutadorEmEditData(EditText editText) {
 
-        dataInicioAtividade.setOnClickListener((view) -> {
+        editText.setOnClickListener((view) -> {
             final Calendar calendario = Calendar.getInstance();
             int ano = calendario.get(Calendar.YEAR);
             int mes = calendario.get(Calendar.MONTH);
@@ -136,7 +158,7 @@ public class CriarAtividade extends AppCompatActivity {
                     (view1, hour, minute) -> {
                         calendario.set(Calendar.HOUR, hour);
                         calendario.set(Calendar.MINUTE, minute);
-                        dataInicioAtividade.setText(new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
+                        editText.setText(new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
                                 Locale.getDefault()).format(calendario.getTime()));
                     }, hora, minuto, true);
 

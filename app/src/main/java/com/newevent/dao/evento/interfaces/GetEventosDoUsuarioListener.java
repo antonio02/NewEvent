@@ -1,4 +1,4 @@
-package com.newevent.dao.evento;
+package com.newevent.dao.evento.interfaces;
 
 import com.newevent.model.Evento;
 

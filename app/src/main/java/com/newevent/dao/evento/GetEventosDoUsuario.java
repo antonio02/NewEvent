@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.newevent.dao.evento.interfaces.GetEventosDoUsuarioListener;
 import com.newevent.model.Evento;
 import com.newevent.utils.DataSnapshotToEvento;
 import com.newevent.utils.UsuarioUtils;

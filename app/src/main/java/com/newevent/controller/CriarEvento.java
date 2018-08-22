@@ -143,7 +143,7 @@ public class CriarEvento extends AppCompatActivity {
                 String cidade = mEdtxtCidade.getText().toString();
                 String uf = mEdtxtUf.getText().toString();
 
-                switch (CriarLocalValidador.validarCriarLocal(endereco, bairro, cidade, uf)){
+                switch (CriarLocalValidador.validar(endereco, bairro, cidade, uf)){
                     case CriarLocalValidador.ENDERECO_INVALIDO:
                         mEdtxtEndereco.setError("Informe seu endereço");
                         mEdtxtEndereco.requestFocus();

@@ -179,7 +179,7 @@ public class Atividade {
         Map<String, Object> map = new HashMap<>();
 
         map.put("dono_uid", donoUid);
-        map.put("evento_uid", (new HashMap<String, Object>()).put(eventoUid, true));
+        map.put("evento_uid", eventoUid);
 
         map.put("nome", nome);
         map.put("tipo", tipo);
@@ -196,6 +196,7 @@ public class Atividade {
         Atividade atividade = new Atividade();
 
         atividade.setUid((String) map.get("uid"));
+        atividade.setDonoUid((String) map.get("dono_uid"));
         atividade.setEventoUid((String) map.get("evento_uid"));
 
         atividade.setNome((String) map.get("nome"));

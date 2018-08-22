@@ -11,12 +11,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseUser;
 import com.newevent.R;
-import com.newevent.model.Evento;
 import com.newevent.model.Local;
-import com.newevent.utils.CriarEventoValidador;
+import com.newevent.usecase.CriarNovoEvento;
 import com.newevent.utils.CriarLocalValidador;
 
 import java.text.ParseException;
@@ -24,7 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 public class CriarEvento extends AppCompatActivity {
 
@@ -33,17 +30,23 @@ public class CriarEvento extends AppCompatActivity {
     private EditText mEditLocal;
     private EditText mEditDataInicio;
 
-    private DatabaseReference eventosBD;
+    private FirebaseUser usuario;
+
+    private CriarNovoEvento criarEvento;
 
     private Local local;
-    private Evento novoEvento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criar_evento);
 
-        eventosBD = FirebaseDatabase.getInstance().getReference("eventos");
+        criarEvento = new CriarNovoEvento();
+
+        usuario = FirebaseAuth.getInstance().getCurrentUser();
+        if(usuario == null){
+            finish();
+        }
 
         inicializarViews();
         atribuirEscutadorEmEditLocal();
@@ -55,41 +58,37 @@ public class CriarEvento extends AppCompatActivity {
         String tipo = mEditTipo.getText().toString();
         Date data = pegarData();
 
-        switch(CriarEventoValidador.validarNovoEvento(nome, tipo, local, data)){
-            case CriarEventoValidador.NOME_DO_EVENTO_INVALIDO:
+        switch(criarEvento.salvar(usuario.getUid(), nome, tipo, local, data)){
+
+            case CriarNovoEvento.USUARIO_DESLOGADO:
+                finish();
+                break;
+
+            case CriarNovoEvento.NOME_DO_EVENTO_INVALIDO:
                 mEditNome.setError("Nome vazio ou menor que 6 caracteres");
                 mEditNome.requestFocus();
                 break;
 
-            case CriarEventoValidador.TIPO_DE_EVENTO_INVALIDO:
+            case CriarNovoEvento.TIPO_DE_EVENTO_INVALIDO:
                 mEditTipo.setError("Tipo vazio ou menor que 5 caracteres");
                 mEditTipo.requestFocus();
                 break;
 
-            case CriarEventoValidador.LOCAL_DO_EVENTO_INVALIDO:
+            case CriarNovoEvento.LOCAL_DO_EVENTO_INVALIDO:
                 Toast.makeText(this, "Local do evento vazio",
                         Toast.LENGTH_SHORT).show();
                 break;
 
-            case CriarEventoValidador.DATA_INICIO_DO_EVENTO_INVALIDA:
+            case CriarNovoEvento.DATA_INICIO_DO_EVENTO_INVALIDA:
                 Toast.makeText(this, "Data vazia ou invalida",
                         Toast.LENGTH_SHORT).show();
                 break;
 
-            case CriarEventoValidador.EVENTO_VALIDO:
-                novoEvento = new Evento(nome, tipo, local, data);
-                salvarEvento();
+            case CriarNovoEvento.SALVO:
+                finish();
                 break;
         }
 
-    }
-
-    private void salvarEvento(){
-        String uid = novoEvento.getUid() == null ? eventosBD.push().getKey() : novoEvento.getUid();
-        assert uid != null;
-        novoEvento.setDonoUid(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-        eventosBD.child(uid).updateChildren(novoEvento.toMap());
-        finish();
     }
 
     public void cancelar(View view) {

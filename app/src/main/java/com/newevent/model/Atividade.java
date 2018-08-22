@@ -25,12 +25,28 @@ public class Atividade {
 
         setEventoUid(eventoUid);
         setNome(nome);
-        this.tipo = tipo;
-        this.valor = valor;
-        this.dataInicio = dataInicio;
-        this.dataTermino = dataTermino;
-        this.maxInscricoes = maxIncricoes;
+        setTipo(tipo);
+        setValor(valor);
+        setDataInicio(dataInicio);
+        setDataTermino(dataTermino);
+        setMaxInscricoes(maxIncricoes);
         this.inscricoesAbertas = false;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public String getDonoUid() {
+        return donoUid;
+    }
+
+    public String getEventoUid() {
+        return eventoUid;
+    }
+
+    public boolean isInscricoesAbertas() {
+        return inscricoesAbertas;
     }
 
     public String getNome() {

@@ -17,8 +17,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.newevent.R;
 import com.newevent.controller.DetalhesEvento;
+import com.newevent.controller.MeuEvento;
 import com.newevent.model.Evento;
 import com.newevent.utils.DataSnapToEvento;
+import com.newevent.utils.UidUtil;
 import com.newevent.utils.UsuarioUtils;
 
 import java.text.SimpleDateFormat;
@@ -40,7 +42,7 @@ public class EventosRvAdapter extends RecyclerView.Adapter<EventosRvAdapter.Even
 
     private void povoar(){
         eventos = new ArrayList<>();
-        eventosBD.addValueEventListener(new ValueEventListener() {
+        eventosBD.orderByChild("data_inicio").addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventos.clear();
@@ -83,12 +85,17 @@ public class EventosRvAdapter extends RecyclerView.Adapter<EventosRvAdapter.Even
     private void atribuirEscultadorAoCard(EventoHolder holder, int position) {
         holder.card.setOnClickListener(v -> {
             String usuarioDonoUid = eventos.get(position).getDonoUid();
-            String usuarioLogadoUid = UsuarioUtils.getUid();
+            Intent it;
 
-            if (usuarioDonoUid == usuarioLogadoUid) {
-//                TODO: criar e iniciar a activity MeuEvento.
+            if (UsuarioUtils.isLogado() && usuarioDonoUid.equals(UsuarioUtils.getUid())) {
+                it = new Intent(contexto, MeuEvento.class);
+                it.putExtra("evento_uid", eventos.get(position).getUid());
+                contexto.startActivity(it);
+
             } else {
-                contexto.startActivity(new Intent(contexto, DetalhesEvento.class));
+                it = new Intent(contexto, DetalhesEvento.class);
+                it.putExtra("evento_uid", eventos.get(position).getUid());
+                contexto.startActivity(it);
             }
         });
     }

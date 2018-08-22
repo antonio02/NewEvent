@@ -135,6 +135,7 @@ public class Evento {
         map.put("local", local.toMap());
         map.put("data_inicio", dataInicio.getTime());
         map.put("publicado", publicado);
+        map.put("atividades", atividadesUid);
 
         return map;
     }
@@ -150,6 +151,8 @@ public class Evento {
         evento.setLocal((Local) map.get("local"));
         evento.setDataInicio((Date) map.get("data_inicio"));
         evento.publicado = (boolean) map.get("publicado");
+        Map<String, Object> atividades = (Map<String, Object>) map.get("atividades");
+        evento.atividadesUid = atividades == null ? new HashMap<>() : atividades;
 
         return evento;
     }

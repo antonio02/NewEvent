@@ -32,7 +32,7 @@ public class Eventos extends AppCompatActivity {
     private void biding() {
         auth = FirebaseAuth.getInstance();
         rv = findViewById(R.id.rv_eventos);
-        rv.setAdapter(new EventosRvAdapter());
+        rv.setAdapter(new EventosRvAdapter(this));
         rv.setLayoutManager(new LinearLayoutManager(this));
     }
 

@@ -28,7 +28,7 @@ public class GetEventosDoUsuario {
         get();
     }
 
-    private void get(){
+    public void get(){
         if(UsuarioUtils.isLogado()){
             this.eventosBD.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override

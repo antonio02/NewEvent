@@ -31,7 +31,7 @@ public class GetAtividadesDoEvento {
         get();
     }
 
-    private void get(){
+    public void get(){
         if(UsuarioUtils.isLogado() && UidUtil.isValido(eventoUid)){
             this.atividadeBD.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override

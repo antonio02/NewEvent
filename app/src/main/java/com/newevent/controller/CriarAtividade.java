@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.newevent.R;
 import com.newevent.dao.evento.GetEventoRealtime;
-import com.newevent.dao.evento.GetEventoRealtimeListener;
+import com.newevent.dao.evento.interfaces.GetEventoRealtimeListener;
 import com.newevent.model.Evento;
 import com.newevent.usecase.CriarNovaAtividade;
 
@@ -81,19 +81,19 @@ public class CriarAtividade extends AppCompatActivity {
                 break;
 
             case CriarNovaAtividade.NOME_INVALIDO:
-            nomeAtividade.setError("Nome nulo ou menor que 4 caracteres");
-            nomeAtividade.requestFocus();
-            break;
+                nomeAtividade.setError("Nome nulo ou menor que 4 caracteres");
+                nomeAtividade.requestFocus();
+                break;
 
             case CriarNovaAtividade.TIPO_INVALIDO:
-            tipoAtividade.setError("Nome nulo ou menor que 4 caracteres");
-            tipoAtividade.requestFocus();
-            break;
+                tipoAtividade.setError("Nome nulo ou menor que 4 caracteres");
+                tipoAtividade.requestFocus();
+                break;
 
             case CriarNovaAtividade.VALOR_INVALIDO:
-            valorAtividade.setError("Valor nulo ou menor que 0");
-            valorAtividade.requestFocus();
-            break;
+                valorAtividade.setError("Valor nulo ou menor que 0");
+                valorAtividade.requestFocus();
+                break;
 
             case CriarNovaAtividade.MAX_INCRICOES_INVALIDO:
                 maxInscricoesAtividade.setError("Numero de inscrições menor que 1");
@@ -101,14 +101,14 @@ public class CriarAtividade extends AppCompatActivity {
                 break;
 
             case CriarNovaAtividade.DATA_INICIO_INVALIDA:
-            dataInicioAtividade.setError("Data de Inicio nula");
-            dataInicioAtividade.requestFocus();
-            break;
+                dataInicioAtividade.setError("Data de Inicio nula");
+                dataInicioAtividade.requestFocus();
+                break;
 
             case CriarNovaAtividade.DATA_TERMINO_INVALIDA:
-            dataFimAtividade.setError("Data de Termino nula");
-            dataFimAtividade.requestFocus();
-            break;
+                dataFimAtividade.setError("Data de Termino nula");
+                dataFimAtividade.requestFocus();
+                break;
 
         }
 

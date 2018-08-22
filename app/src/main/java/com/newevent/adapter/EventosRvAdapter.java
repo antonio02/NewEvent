@@ -20,6 +20,7 @@ import com.newevent.controller.DetalhesEvento;
 import com.newevent.controller.MeuEvento;
 import com.newevent.model.Evento;
 import com.newevent.utils.DataSnapToEvento;
+import com.newevent.utils.DataUtil;
 import com.newevent.utils.UidUtil;
 import com.newevent.utils.UsuarioUtils;
 
@@ -42,7 +43,10 @@ public class EventosRvAdapter extends RecyclerView.Adapter<EventosRvAdapter.Even
 
     private void povoar(){
         eventos = new ArrayList<>();
-        eventosBD.orderByChild("data_inicio").addValueEventListener( new ValueEventListener() {
+        eventosBD
+                .orderByChild("data_inicio")
+                .startAt(DataUtil.getAtual().getTime())
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventos.clear();

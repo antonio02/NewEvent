@@ -3,6 +3,7 @@ package com.newevent.usecase;
 import com.newevent.dao.evento.EventoSalvarAtualizar;
 import com.newevent.model.Evento;
 import com.newevent.model.Local;
+import com.newevent.utils.UsuarioUtils;
 
 import java.util.Date;
 
@@ -21,9 +22,9 @@ public class CriarNovoEvento {
         eventoSalvar = new EventoSalvarAtualizar();
     }
 
-    public int salvar(String usuarioUid, String nome, String tipo, Local local, Date dataInicio){
+    public int criar(String nome, String tipo, Local local, Date dataInicio){
 
-        if(usuarioUid == null || usuarioUid.trim().isEmpty()){
+        if(!UsuarioUtils.isLogado()){
             return USUARIO_DESLOGADO;
         }
 
@@ -52,7 +53,7 @@ public class CriarNovoEvento {
         }
 
         Evento evento = new Evento(nome, tipo, local, dataInicio);
-        evento.setDonoUid(usuarioUid);
+        evento.setDonoUid(UsuarioUtils.getUid());
 
         eventoSalvar.put(evento);
 

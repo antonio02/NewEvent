@@ -98,7 +98,7 @@ public class CriarAtividade extends AppCompatActivity implements GetEventoRealti
                 break;
 
             case CriarNovaAtividade.TIPO_INVALIDO:
-                tipoAtividade.setError("Nome nulo ou menor que 4 caracteres");
+                tipoAtividade.setError("Tipo nulo ou menor que 4 caracteres");
                 tipoAtividade.requestFocus();
                 break;
 

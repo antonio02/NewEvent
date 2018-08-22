@@ -9,7 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.newevent.dao.evento.interfaces.GetEventosDoUsuarioListener;
 import com.newevent.model.Evento;
-import com.newevent.utils.DataSnapshotToEvento;
+import com.newevent.utils.DataSnapToEvento;
 import com.newevent.utils.UsuarioUtils;
 
 import java.util.ArrayList;
@@ -25,9 +25,10 @@ public class GetEventosDoUsuario {
         this.listener = listener;
         this.eventosBD = FirebaseDatabase.getInstance().getReference("eventos");
         this.eventos = new ArrayList<>();
+        get();
     }
 
-    public void get(){
+    private void get(){
         if(UsuarioUtils.isLogado()){
             this.eventosBD.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -35,7 +36,7 @@ public class GetEventosDoUsuario {
                     eventos.clear();
                     for(DataSnapshot d: dataSnapshot.getChildren()){
                         if(UsuarioUtils.getUid().equals(d.child("dono_uid").getValue())){
-                            eventos.add(DataSnapshotToEvento.get(d));
+                            eventos.add(DataSnapToEvento.get(d));
                         }
                     }
                     listener.onResult(eventos);

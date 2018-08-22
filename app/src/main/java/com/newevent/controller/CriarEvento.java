@@ -16,6 +16,7 @@ import com.newevent.R;
 import com.newevent.model.Local;
 import com.newevent.usecase.CriarNovoEvento;
 import com.newevent.utils.CriarLocalValidador;
+import com.newevent.utils.UsuarioUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,8 +31,6 @@ public class CriarEvento extends AppCompatActivity {
     private EditText mEditLocal;
     private EditText mEditDataInicio;
 
-    private FirebaseUser usuario;
-
     private CriarNovoEvento criarEvento;
 
     private Local local;
@@ -43,8 +42,7 @@ public class CriarEvento extends AppCompatActivity {
 
         criarEvento = new CriarNovoEvento();
 
-        usuario = FirebaseAuth.getInstance().getCurrentUser();
-        if(usuario == null){
+        if(!UsuarioUtils.isLogado()){
             finish();
         }
 
@@ -58,7 +56,7 @@ public class CriarEvento extends AppCompatActivity {
         String tipo = mEditTipo.getText().toString();
         Date data = pegarData();
 
-        switch(criarEvento.salvar(usuario.getUid(), nome, tipo, local, data)){
+        switch(criarEvento.criar(nome, tipo, local, data)){
 
             case CriarNovoEvento.USUARIO_DESLOGADO:
                 finish();

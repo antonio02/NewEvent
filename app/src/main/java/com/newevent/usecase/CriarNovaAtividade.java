@@ -1,12 +1,16 @@
 package com.newevent.usecase;
 
 import com.newevent.dao.atividade.AtividadeSalvarAtualizar;
+import com.newevent.dao.atividade.GetAtividadesDoEvento;
+import com.newevent.dao.atividade.interfaces.GetAtividadesDoEventoListener;
 import com.newevent.dao.evento.EventoSalvarAtualizar;
 import com.newevent.model.Atividade;
 import com.newevent.model.Evento;
+import com.newevent.utils.UidUtil;
 import com.newevent.utils.UsuarioUtils;
 
 import java.util.Date;
+import java.util.List;
 
 public class CriarNovaAtividade {
 
@@ -19,6 +23,8 @@ public class CriarNovaAtividade {
     public static final int MAX_INCRICOES_INVALIDO = 6;
     public static final int USUARIO_DESLOGADO = 7;
     public static final int EVENTO_INVALIDO = 8;
+    public static final int DATA_DE_INICIO_MENOR_QUE_EVENTO = 9;
+    public static final int DATA_DE_TERMINO_MAIOR_QUE_EVENTO = 10;
 
     private AtividadeSalvarAtualizar atividadeSalvar;
     private EventoSalvarAtualizar eventoAtualizar;
@@ -35,7 +41,7 @@ public class CriarNovaAtividade {
             return USUARIO_DESLOGADO;
         }
 
-        if(evento == null || evento.getUid() == null){
+        if(UidUtil.eventoTemUid(evento)){
             return EVENTO_INVALIDO;
         }
 
@@ -63,8 +69,17 @@ public class CriarNovaAtividade {
             return DATA_INICIO_INVALIDA;
         }
 
+        if(evento.getDataInicio().getTime() > dataInicio.getTime()){
+            return DATA_DE_INICIO_MENOR_QUE_EVENTO;
+        }
+
         if(dataTermino == null || dataTermino.getTime() < dataInicio.getTime()){
             return DATA_TERMINO_INVALIDA;
+        }
+
+        if(evento.getDataTermino() != null &&
+                evento.getDataTermino().getTime() < dataTermino.getTime()){
+            return DATA_DE_TERMINO_MAIOR_QUE_EVENTO;
         }
 
         try {

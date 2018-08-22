@@ -55,6 +55,7 @@
                 android:id="@+id/edtxt_criar_atividade_valor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:nextFocusDown="@id/edtxt_criar_atividade_max_inscricoes"
                 android:hint="R$ Valor"
                 android:inputType="numberDecimal"/>
 

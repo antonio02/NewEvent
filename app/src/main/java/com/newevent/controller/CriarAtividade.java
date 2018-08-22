@@ -51,7 +51,7 @@ public class CriarAtividade extends AppCompatActivity implements GetEventoRealti
 
     @Override
     protected void onDestroy() {
-
+        getEvento.stop();
         super.onDestroy();
     }
 
@@ -76,12 +76,13 @@ public class CriarAtividade extends AppCompatActivity implements GetEventoRealti
             finish();
             return;
         }
+
         String nome = nomeAtividade.getText().toString();
         String tipo = tipoAtividade.getText().toString();
         double valor = pegarValorAtividade();
         int maxInscricoes = pegarMaxInscricoes();
-        Date dataInicio = pegarDataInicio();
-        Date dataFim = pegarDataFim();
+        Date dataInicio = pegarData(dataInicioAtividade);
+        Date dataFim = pegarData(dataFimAtividade);
 
         switch (criarAtividade.criar(mEvento, nome, tipo, valor, dataInicio,
                 dataFim, maxInscricoes)) {
@@ -118,9 +119,23 @@ public class CriarAtividade extends AppCompatActivity implements GetEventoRealti
                         Toast.LENGTH_SHORT).show();
                 break;
 
+            case CriarNovaAtividade.DATA_DE_INICIO_MENOR_QUE_EVENTO:
+                Toast.makeText(this,
+                        "Data de inicio menor que o inicio do evento: " + new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
+                    Locale.getDefault()).format(mEvento.getDataInicio()),
+                        Toast.LENGTH_LONG).show();
+                break;
+
             case CriarNovaAtividade.DATA_TERMINO_INVALIDA:
                 Toast.makeText(this,
                         "Data de termino vazia ou menor que a data de inicio",
+                        Toast.LENGTH_SHORT).show();
+                break;
+
+            case CriarNovaAtividade.DATA_DE_TERMINO_MAIOR_QUE_EVENTO:
+                Toast.makeText(this,
+                        "Data de termino maior que o fim do evento: " + new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
+                                Locale.getDefault()).format(mEvento.getDataTermino()),
                         Toast.LENGTH_SHORT).show();
                 break;
 
@@ -148,21 +163,11 @@ public class CriarAtividade extends AppCompatActivity implements GetEventoRealti
         }
     }
 
-    private Date pegarDataInicio() {
+    private Date pegarData(EditText edtxtData) {
         try {
             SimpleDateFormat formato = new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
                     Locale.getDefault());
-            return formato.parse(dataInicioAtividade.getText().toString());
-        } catch (ParseException e) {
-            return null;
-        }
-    }
-
-    private Date pegarDataFim() {
-        try {
-            SimpleDateFormat formato = new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
-                    Locale.getDefault());
-            return formato.parse(dataFimAtividade.getText().toString());
+            return formato.parse(edtxtData.getText().toString());
         } catch (ParseException e) {
             return null;
         }
@@ -172,15 +177,16 @@ public class CriarAtividade extends AppCompatActivity implements GetEventoRealti
 
         editText.setOnClickListener((view) -> {
             final Calendar calendario = Calendar.getInstance();
+            calendario.setTime(mEvento.getDataInicio());
             int ano = calendario.get(Calendar.YEAR);
             int mes = calendario.get(Calendar.MONTH);
             int dia = calendario.get(Calendar.DAY_OF_MONTH);
-            int hora = calendario.get(Calendar.HOUR);
+            int hora = calendario.get(Calendar.HOUR_OF_DAY);
             int minuto = calendario.get(Calendar.MINUTE);
 
             TimePickerDialog timePickerDialog = new TimePickerDialog(this,
                     (view1, hour, minute) -> {
-                        calendario.set(Calendar.HOUR, hour);
+                        calendario.set(Calendar.HOUR_OF_DAY, hour);
                         calendario.set(Calendar.MINUTE, minute);
                         editText.setText(new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
                                 Locale.getDefault()).format(calendario.getTime()));

@@ -82,6 +82,11 @@ public class CriarEvento extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
                 break;
 
+            case CriarNovoEvento.DATA_DE_INICIO_MENOR_DATA_MINIMA:
+                Toast.makeText(this, "A data precisa ter pelo menos 6 horas para o inicio do evento",
+                        Toast.LENGTH_LONG).show();
+                break;
+
             case CriarNovoEvento.SALVO:
                 finish();
                 break;

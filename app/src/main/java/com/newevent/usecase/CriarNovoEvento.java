@@ -3,6 +3,7 @@ package com.newevent.usecase;
 import com.newevent.dao.evento.EventoSalvarAtualizar;
 import com.newevent.model.Evento;
 import com.newevent.model.Local;
+import com.newevent.utils.DataUtil;
 import com.newevent.utils.UsuarioUtils;
 
 import java.util.Date;
@@ -15,6 +16,7 @@ public class CriarNovoEvento {
     public static final int LOCAL_DO_EVENTO_INVALIDO = 3;
     public static final int DATA_INICIO_DO_EVENTO_INVALIDA = 4;
     public static final int USUARIO_DESLOGADO = 5;
+    public static final int DATA_DE_INICIO_MENOR_DATA_MINIMA = 6;
 
     private EventoSalvarAtualizar eventoSalvar;
 
@@ -50,6 +52,10 @@ public class CriarNovoEvento {
             Evento.validarData(dataInicio);
         } catch (IllegalArgumentException e){
             return DATA_INICIO_DO_EVENTO_INVALIDA;
+        }
+
+        if(DataUtil.getMinimaEvento().getTime() > dataInicio.getTime()){
+            return DATA_DE_INICIO_MENOR_DATA_MINIMA;
         }
 
         Evento evento = new Evento(nome, tipo, local, dataInicio);

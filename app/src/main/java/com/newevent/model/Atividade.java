@@ -135,7 +135,7 @@ public class Atividade {
 
     public static String validarTipo(String tipo){
         if(tipo == null || tipo.trim().length() < 4){
-            throw new IllegalArgumentException("Tipo nulo ou menor que 4 caracteres");
+            throw new IllegalArgumentException("Nome nulo ou menor que 4 caracteres");
         }
         return tipo;
     }

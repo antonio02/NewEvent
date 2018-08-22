@@ -22,8 +22,8 @@ public class NovoEventoTestes {
         long dataValida = data.getTimeInMillis() + 172800000;
 
         this.dataValida = new Date(dataValida);
-        this.localValido = new Local("Teresina", "Piaui",
-                "Avenida Miguel Rosa", "5051");
+        this.localValido = new Local("Rua 10, 580", "Centro",
+                "Teresina", "PI");
     }
 
     private Evento criarEventoValido(){
@@ -158,30 +158,6 @@ public class NovoEventoTestes {
         }catch (IllegalArgumentException e){
             assertTrue(true);
         }
-    }
-
-    @Test
-    public void deve_recusar_a_criacao_e_o_setDataInicio_caso_a_data_de_inicio_seja_menos_de_doze_horas_para_o_inicio_do_evento(){
-        try {
-            testarCriacao("Nome: Teste", "Tipo: Palestra",
-                    localValido, new Date(Calendar.getInstance().getTimeInMillis()));
-            assertTrue(
-                    "Aceitou uma data com menos de 12 horas para o inicio do evento",
-                    false);
-        }catch (IllegalArgumentException e){
-            assertTrue(true);
-        }
-
-        try {
-            Evento evento = criarEventoValido();
-            evento.setDataInicio(new Date(Calendar.getInstance().getTimeInMillis()));
-            assertTrue(
-                    "Aceitou uma data com menos de 12 horas para o inicio do evento",
-                    false);
-        }catch (IllegalArgumentException e){
-            assertTrue(true);
-        }
-
     }
 
     @Test

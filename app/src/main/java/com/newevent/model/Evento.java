@@ -1,6 +1,5 @@
 package com.newevent.model;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +8,8 @@ public class Evento {
 
     private String uid;
     private String donoUid;
+    private Map<String, Object> atividadesUid;
+
     private String nome;
     private String tipo;
     private Local local;
@@ -23,6 +24,11 @@ public class Evento {
         this.local = validarLocal(local);
         this.dataInicio = validarDataInicio(dataInicio);
         this.publicado = false;
+        this.atividadesUid = new HashMap<>();
+    }
+
+    public Map<String, Object> getAtividadesUid() {
+        return new HashMap<>(atividadesUid);
     }
 
     public String getNome() {
@@ -47,6 +53,16 @@ public class Evento {
 
     public String getUid() {
         return uid;
+    }
+
+    public void addAtividadeUid(String uid){
+        if(uid != null && !uid.isEmpty()){
+            atividadesUid.put(uid, true);
+        }
+    }
+
+    public void removerAtividade(String uid){
+        atividadesUid.remove(uid);
     }
 
     public void setUid(String uid) {
@@ -103,21 +119,23 @@ public class Evento {
     }
 
     public static Date validarDataInicio(Date dataInicio){
-        if(dataInicio == null ||
-                dataInicio.getTime() < (Calendar.getInstance().getTimeInMillis() + 43200000)){
-            throw new IllegalArgumentException("Data de inicio nula ou menor que 12 horas para o inicio do evento");
+        if(dataInicio == null){
+            throw new IllegalArgumentException("Data de inicio nula");
         }
         return dataInicio;
     }
 
     public Map<String, Object> toMap(){
         Map<String, Object> map = new HashMap<>();
+
         map.put("dono_uid", donoUid);
+
         map.put("nome", nome);
         map.put("tipo", tipo);
         map.put("local", local.toMap());
         map.put("data_inicio", dataInicio.getTime());
         map.put("publicado", publicado);
+
         return map;
     }
 

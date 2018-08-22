@@ -51,7 +51,7 @@ public class CriarAtividade extends AppCompatActivity implements GetEventoRealti
 
     @Override
     protected void onDestroy() {
-
+        getEvento.stop();
         super.onDestroy();
     }
 

@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DataSnapshotToEvento {
+public class DataSnapToEvento {
 
     public static Evento get(DataSnapshot d){
         Map<String, Object> map = new HashMap<>();

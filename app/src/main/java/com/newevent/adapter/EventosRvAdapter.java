@@ -15,7 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.newevent.R;
 import com.newevent.model.Evento;
-import com.newevent.utils.DataSnapshotToEvento;
+import com.newevent.utils.DataSnapToEvento;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class EventosRvAdapter extends RecyclerView.Adapter<EventosRvAdapter.Even
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventos.clear();
                 for(DataSnapshot d: dataSnapshot.getChildren()){
-                    eventos.add(DataSnapshotToEvento.get(d));
+                    eventos.add(DataSnapToEvento.get(d));
                 }
                 notifyDataSetChanged();
             }

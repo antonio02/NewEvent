@@ -3,6 +3,7 @@ package com.newevent.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.newevent.R;
-import com.newevent.controller.MeuEvento;
+import com.newevent.controller.DetalhesEvento;
 import com.newevent.model.Evento;
 import com.newevent.utils.DataSnapToEvento;
 import com.newevent.utils.UsuarioUtils;
@@ -64,16 +65,6 @@ public class EventosRvAdapter extends RecyclerView.Adapter<EventosRvAdapter.Even
         return new EventoHolder(v);
     }
 
-    private void setupOnClick(int pos) {
-        if(UsuarioUtils.isLogado()){
-            if(eventos.get(pos).getDonoUid().equals(UsuarioUtils.getUid())){
-                Intent it = new Intent(contexto, MeuEvento.class);
-                it.putExtra("evento_uid", eventos.get(pos).getUid());
-                contexto.startActivity(it);
-            }
-        }
-    }
-
     @Override
     public void onBindViewHolder(@NonNull EventoHolder holder, int position) {
         final SimpleDateFormat formatData = new SimpleDateFormat(
@@ -86,7 +77,20 @@ public class EventosRvAdapter extends RecyclerView.Adapter<EventosRvAdapter.Even
         holder.txtData.setText("Data: "+ formatData.format(eventos.get(position).getDataInicio()));
         holder.txtHora.setText("Início as "+ formatHora.format(eventos.get(position).getDataInicio()));
 
-        holder.itemView.setOnClickListener(view -> setupOnClick(position));
+        atribuirEscultadorAoCard(holder, position);
+    }
+
+    private void atribuirEscultadorAoCard(EventoHolder holder, int position) {
+        holder.card.setOnClickListener(v -> {
+            String usuarioDonoUid = eventos.get(position).getDonoUid();
+            String usuarioLogadoUid = UsuarioUtils.getUid();
+
+            if (usuarioDonoUid == usuarioLogadoUid) {
+//                TODO: criar e iniciar a activity MeuEvento.
+            } else {
+                contexto.startActivity(new Intent(contexto, DetalhesEvento.class));
+            }
+        });
     }
 
     @Override
@@ -96,6 +100,7 @@ public class EventosRvAdapter extends RecyclerView.Adapter<EventosRvAdapter.Even
 
     class EventoHolder extends RecyclerView.ViewHolder{
 
+        CardView card;
         TextView txtNome;
         TextView txtTipo;
         TextView txtData;
@@ -103,6 +108,7 @@ public class EventosRvAdapter extends RecyclerView.Adapter<EventosRvAdapter.Even
 
         EventoHolder(View itemView) {
             super(itemView);
+            card = itemView.findViewById(R.id.card_eventos_rv);
             txtNome = itemView.findViewById(R.id.txt_eventos_rv_cv_nome);
             txtTipo = itemView.findViewById(R.id.txt_eventos_rv_cv_tipo);
             txtData = itemView.findViewById(R.id.txt_eventos_rv_cv_data);

@@ -22,15 +22,15 @@ public class ItemAtividade {
 
     public ItemAtividade(String atividadeUid, String donoUid, String inscricaoUid, double valor, Date valorEm) {
 
-        if(atividadeUid == null){
+        if(atividadeUid == null || !UidUtil.isValido(atividadeUid)){
             throw new IllegalArgumentException("AtividadeUid nulo no construtor de ItemAtividade");
         }
 
-        if(donoUid == null){
+        if(donoUid == null || !UidUtil.isValido(donoUid)){
             throw new IllegalArgumentException("DonoUid nulo no construtor de ItemAtividade");
         }
 
-        if(inscricaoUid == null){
+        if(inscricaoUid == null || !UidUtil.isValido(inscricaoUid)){
             throw new IllegalArgumentException("InscricaoUid nulo no construtor de ItemAtividade");
         }
 

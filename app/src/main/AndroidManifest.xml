@@ -21,7 +21,7 @@
         <activity android:name=".controller.Eventos" />
         <activity android:name=".controller.CriarEvento" />
         <activity android:name=".controller.CriarAtividade" />
-        <activity android:name=".controller.Evento"></activity>
+        <activity android:name=".controller.DetalhesEvento"></activity>
     </application>
 
 </manifest>

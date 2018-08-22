@@ -121,8 +121,9 @@ public class CriarAtividade extends AppCompatActivity implements GetEventoRealti
 
             case CriarNovaAtividade.DATA_DE_INICIO_MENOR_QUE_EVENTO:
                 Toast.makeText(this,
-                        "Data de inicio menor que o inicio do evento",
-                        Toast.LENGTH_SHORT).show();
+                        "Data de inicio menor que o inicio do evento: " + new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
+                    Locale.getDefault()).format(mEvento.getDataInicio()),
+                        Toast.LENGTH_LONG).show();
                 break;
 
             case CriarNovaAtividade.DATA_TERMINO_INVALIDA:
@@ -133,7 +134,8 @@ public class CriarAtividade extends AppCompatActivity implements GetEventoRealti
 
             case CriarNovaAtividade.DATA_DE_TERMINO_MAIOR_QUE_EVENTO:
                 Toast.makeText(this,
-                        "Data de termino maior que o fim do evento",
+                        "Data de termino maior que o fim do evento: " + new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
+                                Locale.getDefault()).format(mEvento.getDataTermino()),
                         Toast.LENGTH_SHORT).show();
                 break;
 
@@ -175,6 +177,7 @@ public class CriarAtividade extends AppCompatActivity implements GetEventoRealti
 
         editText.setOnClickListener((view) -> {
             final Calendar calendario = Calendar.getInstance();
+            calendario.setTime(mEvento.getDataInicio());
             int ano = calendario.get(Calendar.YEAR);
             int mes = calendario.get(Calendar.MONTH);
             int dia = calendario.get(Calendar.DAY_OF_MONTH);

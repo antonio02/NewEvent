@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.newevent.R;
 import com.newevent.model.Local;
 import com.newevent.usecase.CriarNovoEvento;
@@ -82,7 +80,7 @@ public class CriarEvento extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
                 break;
 
-            case CriarNovoEvento.DATA_DE_INICIO_MENOR_DATA_MINIMA:
+            case CriarNovoEvento.DATA_DE_INICIO_MENOR_DATA_MINIMA_CRIACAO:
                 Toast.makeText(this, "A data precisa ter pelo menos 6 horas para o inicio do evento",
                         Toast.LENGTH_LONG).show();
                 break;

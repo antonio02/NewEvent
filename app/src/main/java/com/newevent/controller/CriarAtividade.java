@@ -13,6 +13,7 @@ import com.newevent.dao.evento.GetEventoRealtime;
 import com.newevent.dao.evento.interfaces.GetEventoRealtimeListener;
 import com.newevent.model.Evento;
 import com.newevent.usecase.CriarNovaAtividade;
+import com.newevent.utils.UidUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,7 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class CriarAtividade extends AppCompatActivity {
+public class CriarAtividade extends AppCompatActivity implements GetEventoRealtimeListener {
 
     private EditText nomeAtividade;
     private EditText tipoAtividade;
@@ -31,6 +32,7 @@ public class CriarAtividade extends AppCompatActivity {
 
     private Evento mEvento;
     private CriarNovaAtividade criarAtividade;
+    private GetEventoRealtime getEvento;
 
 
     @Override
@@ -47,29 +49,39 @@ public class CriarAtividade extends AppCompatActivity {
 
     }
 
-    private Evento pegarEvento() {
-        String eventoUid = getIntent().getStringExtra("eventoUid");
-        new GetEventoRealtime(eventoUid, new GetEventoRealtimeListener() {
-            @Override
-            public void onUpdate(Evento evento) {
-                mEvento = evento;
-            }
+    @Override
+    protected void onDestroy() {
 
-            @Override
-            public void onDelete() {
+        super.onDestroy();
+    }
 
+    private void pegarEvento() {
+        String eventoUid;
+        if(getIntent().hasExtra("evento_uid")){
+            eventoUid = getIntent().getStringExtra("evento_uid");
+            if(!UidUtil.isValido(eventoUid)){
+                finish();
+                return;
             }
-        });
-        return null;
+        } else {
+            finish();
+            return;
+        }
+        getEvento = new GetEventoRealtime(eventoUid, this);
     }
 
     public void finalizar(View view) {
+        if(mEvento == null){
+            Toast.makeText(this, "Evento não carregado", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
         String nome = nomeAtividade.getText().toString();
         String tipo = tipoAtividade.getText().toString();
         double valor = pegarValorAtividade();
         int maxInscricoes = pegarMaxInscricoes();
-        Date dataInicio = pegarData();
-        Date dataFim = pegarData();
+        Date dataInicio = pegarDataInicio();
+        Date dataFim = pegarDataFim();
 
         switch (criarAtividade.criar(mEvento, nome, tipo, valor, dataInicio,
                 dataFim, maxInscricoes)) {
@@ -101,13 +113,15 @@ public class CriarAtividade extends AppCompatActivity {
                 break;
 
             case CriarNovaAtividade.DATA_INICIO_INVALIDA:
-                dataInicioAtividade.setError("Data de Inicio nula");
-                dataInicioAtividade.requestFocus();
+                Toast.makeText(this,
+                        "Data de inicio vazia ou invalida",
+                        Toast.LENGTH_SHORT).show();
                 break;
 
             case CriarNovaAtividade.DATA_TERMINO_INVALIDA:
-                dataFimAtividade.setError("Data de Termino nula");
-                dataFimAtividade.requestFocus();
+                Toast.makeText(this,
+                        "Data de termino vazia ou menor que a data de inicio",
+                        Toast.LENGTH_SHORT).show();
                 break;
 
         }
@@ -134,11 +148,21 @@ public class CriarAtividade extends AppCompatActivity {
         }
     }
 
-    private Date pegarData() {
+    private Date pegarDataInicio() {
         try {
             SimpleDateFormat formato = new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
                     Locale.getDefault());
             return formato.parse(dataInicioAtividade.getText().toString());
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    private Date pegarDataFim() {
+        try {
+            SimpleDateFormat formato = new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
+                    Locale.getDefault());
+            return formato.parse(dataFimAtividade.getText().toString());
         } catch (ParseException e) {
             return null;
         }
@@ -181,5 +205,15 @@ public class CriarAtividade extends AppCompatActivity {
         maxInscricoesAtividade = findViewById(R.id.edtxt_criar_atividade_max_inscricoes);
         dataInicioAtividade = findViewById(R.id.edtxt_criar_atividade_data_inicio);
         dataFimAtividade = findViewById(R.id.edtxt_criar_atividade_data_fim);
+    }
+
+    @Override
+    public void onUpdate(Evento evento) {
+        this.mEvento = evento;
+    }
+
+    @Override
+    public void onDelete() {
+
     }
 }

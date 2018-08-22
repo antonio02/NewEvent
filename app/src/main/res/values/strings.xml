@@ -10,4 +10,5 @@
     <string name="cadastroConta_btn_finalizar">Finalizar</string>
     <string name="eventos_menu_logout">LogOut</string>
     <string name="txt_button_inscricao_card_eventos">INSCREVER-SE</string>
+    <string name="eventos_menu_login">Login</string>
 </resources>

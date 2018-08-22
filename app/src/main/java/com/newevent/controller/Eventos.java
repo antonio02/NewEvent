@@ -15,6 +15,7 @@ import android.view.View;
 import com.google.firebase.auth.FirebaseAuth;
 import com.newevent.R;
 import com.newevent.adapter.EventosRvAdapter;
+import com.newevent.utils.UsuarioUtils;
 
 public class Eventos extends AppCompatActivity {
 
@@ -37,10 +38,15 @@ public class Eventos extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(Menu menu) {
         MenuInflater m = new MenuInflater(this);
-        m.inflate(R.menu.eventos_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+        menu.clear();
+        if(UsuarioUtils.isLogado()){
+            m.inflate(R.menu.eventos_menu_logado, menu);
+        } else {
+            m.inflate(R.menu.eventos_menu_deslogado, menu);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -48,9 +54,15 @@ public class Eventos extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.eventos_menu_logout:
                 auth.signOut();
-                Intent it = new Intent(this, Inicio.class);
-                startActivity(it);
+                Intent itIncio = new Intent(this, Inicio.class);
+                startActivity(itIncio);
                 finish();
+                break;
+
+            case R.id.eventos_menu_login:
+                Intent itLogin = new Intent(this, Login.class);
+                startActivity(itLogin);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

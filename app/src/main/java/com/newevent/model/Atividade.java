@@ -8,7 +8,7 @@ public class Atividade {
 
     private String uid;
     private String donoUid;
-    private Evento evento;
+    private String eventoUid;
 
     private String nome;
     private String tipo;
@@ -20,10 +20,10 @@ public class Atividade {
 
     private Atividade(){};
 
-    public Atividade(Evento evento, String nome, String tipo, Double valor,
+    public Atividade(String eventoUid, String nome, String tipo, Double valor,
                      Date dataInicio, Date dataTermino, int maxIncricoes) {
 
-        setEvento(evento);
+        setEventoUid(eventoUid);
         setNome(nome);
         this.tipo = tipo;
         this.valor = valor;
@@ -62,19 +62,21 @@ public class Atividade {
     }
 
     public void setUid(String uid) {
-        if(this.uid == null && uid != null){
-            this.uid = uid;
+        if(this.uid == null && uid != null && !uid.trim().isEmpty()){
+            this.uid = uid.trim();
         }
     }
 
     public void setDonoUid(String donoUid) {
-        if(this.donoUid == null && donoUid != null){
-            this.donoUid = donoUid;
+        if(this.donoUid == null && donoUid != null && !donoUid.trim().isEmpty()){
+            this.donoUid = donoUid.trim();
         }
     }
 
-    public void setEvento(Evento evento) {
-        this.evento = validarEvento(evento);
+    public void setEventoUid(String eventoUid) {
+        if(this.eventoUid == null && eventoUid != null && !eventoUid.trim().isEmpty()){
+            this.eventoUid = eventoUid.trim();
+        }
     }
 
     public void setNome(String nome) {
@@ -105,9 +107,7 @@ public class Atividade {
     }
 
     public void setIncricoesAbertas(boolean incricoesAbertas) {
-        if(evento.isPublicado()){
-            this.inscricoesAbertas = incricoesAbertas;
-        }
+        this.inscricoesAbertas = incricoesAbertas;
     }
 
     public static String validarNome(String nome){
@@ -153,8 +153,8 @@ public class Atividade {
     }
 
     public static int validarMaxInscricoes(int maxInscricoes){
-        if(maxInscricoes < 5){
-            throw new IllegalArgumentException("Numero de inscrições menor que 5");
+        if(maxInscricoes < 1){
+            throw new IllegalArgumentException("Numero de inscrições menor que 1");
         }
         return maxInscricoes;
     }
@@ -162,9 +162,8 @@ public class Atividade {
     public Map<String, Object> toMap(){
         Map<String, Object> map = new HashMap<>();
 
-        map.put("uid", uid);
         map.put("dono_uid", donoUid);
-        map.put("evento", (new HashMap<String, Object>()).put(evento.getUid(), true));
+        map.put("evento_uid", (new HashMap<String, Object>()).put(eventoUid, true));
 
         map.put("nome", nome);
         map.put("tipo", tipo);
@@ -180,7 +179,8 @@ public class Atividade {
     public static Atividade mapToAtividade(Map<String, Object> map){
         Atividade atividade = new Atividade();
 
-        atividade.setEvento((Evento) map.get("evento"));
+        atividade.setUid((String) map.get("uid"));
+        atividade.setEventoUid((String) map.get("evento_uid"));
 
         atividade.setNome((String) map.get("nome"));
         atividade.setTipo((String) map.get("tipo"));

@@ -19,7 +19,8 @@
         <activity android:name=".controller.CadastroConta" />
         <activity android:name=".controller.Login" />
         <activity android:name=".controller.Eventos" />
-        <activity android:name=".controller.CriarEvento"></activity>
+        <activity android:name=".controller.CriarEvento" />
+        <activity android:name=".controller.CriarAtividade"></activity>
     </application>
 
 </manifest>

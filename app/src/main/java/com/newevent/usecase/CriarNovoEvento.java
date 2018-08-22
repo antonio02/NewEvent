@@ -47,7 +47,7 @@ public class CriarNovoEvento {
         }
 
         try {
-            Evento.validarDataInicio(dataInicio);
+            Evento.validarData(dataInicio);
         } catch (IllegalArgumentException e){
             return DATA_INICIO_DO_EVENTO_INVALIDA;
         }

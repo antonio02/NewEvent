@@ -1,5 +1,6 @@
 package com.newevent.adapter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,9 +26,11 @@ public class EventosRvAdapter extends RecyclerView.Adapter<EventosRvAdapter.Even
 
     private DatabaseReference eventosBD;
     private List<Evento> eventos;
+    private Context contexto;
 
-    public EventosRvAdapter() {
+    public EventosRvAdapter(Context contexto) {
         eventosBD = FirebaseDatabase.getInstance().getReference("eventos");
+        this.contexto = contexto;
         povoar();
     }
 

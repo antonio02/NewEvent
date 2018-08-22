@@ -16,8 +16,10 @@ import com.newevent.R;
 import com.newevent.model.Evento;
 import com.newevent.utils.DataSnapshotTo;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class EventosRvAdapter extends RecyclerView.Adapter<EventosRvAdapter.EventoHolder> {
 
@@ -58,7 +60,15 @@ public class EventosRvAdapter extends RecyclerView.Adapter<EventosRvAdapter.Even
 
     @Override
     public void onBindViewHolder(@NonNull EventoHolder holder, int position) {
+        final SimpleDateFormat formatData = new SimpleDateFormat(
+                "dd - MMMM - yyyy", Locale.getDefault());
+        final SimpleDateFormat formatHora = new SimpleDateFormat(
+                "HH:mm", Locale.getDefault());
+
         holder.txtNome.setText(eventos.get(position).getNome());
+        holder.txtTipo.setText(eventos.get(position).getTipo());
+        holder.txtData.setText("Data: "+ formatData.format(eventos.get(position).getDataInicio()));
+        holder.txtHora.setText("Início as "+ formatHora.format(eventos.get(position).getDataInicio()));
     }
 
     @Override
@@ -69,10 +79,16 @@ public class EventosRvAdapter extends RecyclerView.Adapter<EventosRvAdapter.Even
     class EventoHolder extends RecyclerView.ViewHolder{
 
         TextView txtNome;
+        TextView txtTipo;
+        TextView txtData;
+        TextView txtHora;
 
         EventoHolder(View itemView) {
             super(itemView);
             txtNome = itemView.findViewById(R.id.txt_eventos_rv_cv_nome);
+            txtTipo = itemView.findViewById(R.id.txt_eventos_rv_cv_tipo);
+            txtData = itemView.findViewById(R.id.txt_eventos_rv_cv_data);
+            txtHora = itemView.findViewById(R.id.txt_eventos_rv_cv_hora);
         }
     }
 }

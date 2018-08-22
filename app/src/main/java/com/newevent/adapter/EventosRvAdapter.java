@@ -1,6 +1,7 @@
 package com.newevent.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,8 +15,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.newevent.R;
+import com.newevent.controller.MeuEvento;
 import com.newevent.model.Evento;
 import com.newevent.utils.DataSnapToEvento;
+import com.newevent.utils.UsuarioUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,6 +64,16 @@ public class EventosRvAdapter extends RecyclerView.Adapter<EventosRvAdapter.Even
         return new EventoHolder(v);
     }
 
+    private void setupOnClick(int pos) {
+        if(UsuarioUtils.isLogado()){
+            if(eventos.get(pos).getDonoUid().equals(UsuarioUtils.getUid())){
+                Intent it = new Intent(contexto, MeuEvento.class);
+                it.putExtra("evento_uid", eventos.get(pos).getUid());
+                contexto.startActivity(it);
+            }
+        }
+    }
+
     @Override
     public void onBindViewHolder(@NonNull EventoHolder holder, int position) {
         final SimpleDateFormat formatData = new SimpleDateFormat(
@@ -72,6 +85,8 @@ public class EventosRvAdapter extends RecyclerView.Adapter<EventosRvAdapter.Even
         holder.txtTipo.setText(eventos.get(position).getTipo());
         holder.txtData.setText("Data: "+ formatData.format(eventos.get(position).getDataInicio()));
         holder.txtHora.setText("Início as "+ formatHora.format(eventos.get(position).getDataInicio()));
+
+        holder.itemView.setOnClickListener(view -> setupOnClick(position));
     }
 
     @Override

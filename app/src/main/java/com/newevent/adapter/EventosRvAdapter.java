@@ -1,14 +1,12 @@
 package com.newevent.adapter;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -16,7 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.newevent.R;
 import com.newevent.model.Evento;
-import com.newevent.utils.DataSnapshotTo;
+import com.newevent.utils.DataSnapshotToEvento;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +36,7 @@ public class EventosRvAdapter extends RecyclerView.Adapter<EventosRvAdapter.Even
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventos.clear();
                 for(DataSnapshot d: dataSnapshot.getChildren()){
-                    eventos.add(DataSnapshotTo.evento(d));
+                    eventos.add(DataSnapshotToEvento.get(d));
                 }
                 notifyDataSetChanged();
             }

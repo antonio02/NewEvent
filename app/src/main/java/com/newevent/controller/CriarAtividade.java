@@ -76,6 +76,7 @@ public class CriarAtividade extends AppCompatActivity implements GetEventoRealti
             finish();
             return;
         }
+
         String nome = nomeAtividade.getText().toString();
         String tipo = tipoAtividade.getText().toString();
         double valor = pegarValorAtividade();
@@ -118,9 +119,21 @@ public class CriarAtividade extends AppCompatActivity implements GetEventoRealti
                         Toast.LENGTH_SHORT).show();
                 break;
 
+            case CriarNovaAtividade.DATA_DE_INICIO_MENOR_QUE_EVENTO:
+                Toast.makeText(this,
+                        "Data de inicio menor que o inicio do evento",
+                        Toast.LENGTH_SHORT).show();
+                break;
+
             case CriarNovaAtividade.DATA_TERMINO_INVALIDA:
                 Toast.makeText(this,
                         "Data de termino vazia ou menor que a data de inicio",
+                        Toast.LENGTH_SHORT).show();
+                break;
+
+            case CriarNovaAtividade.DATA_DE_TERMINO_MAIOR_QUE_EVENTO:
+                Toast.makeText(this,
+                        "Data de termino maior que o fim do evento",
                         Toast.LENGTH_SHORT).show();
                 break;
 

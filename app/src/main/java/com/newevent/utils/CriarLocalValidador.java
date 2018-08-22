@@ -11,7 +11,7 @@ public class CriarLocalValidador {
     public static final int CIDADE_INVALIDO = 3;
     public static final int UF_INVALIDO = 4;
 
-    public static int validarCriarLocal(String endereco, String bairro, String cidade, String uf) {
+    public static int validar(String endereco, String bairro, String cidade, String uf) {
 
         try {
             Local.validarEndereco(endereco);

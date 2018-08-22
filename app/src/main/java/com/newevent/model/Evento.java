@@ -16,7 +16,9 @@ public class Evento {
     private String tipo;
     private Local local;
     private Date dataInicio;
+    private Date dataTermino;
     private boolean publicado;
+    private boolean inscricoesAbertas;
 
     private Evento(){}
 
@@ -24,9 +26,39 @@ public class Evento {
         this.nome = validarNome(nome);
         this.tipo = validarTipo(tipo);
         this.local = validarLocal(local);
-        this.dataInicio = validarDataInicio(dataInicio);
+        this.dataInicio = validarData(dataInicio);
         this.publicado = false;
+        this.inscricoesAbertas = false;
         this.atividadesUid = new HashMap<>();
+    }
+
+    public boolean publicar(){
+
+        if(this.dataTermino == null){
+            return false;
+        }
+
+        if(this.atividadesUid.size() < 1){
+            return false;
+        }
+
+        this.publicado = true;
+        this.inscricoesAbertas = true;
+        return true;
+    }
+
+    public boolean isInscricoesAbertas() {
+        return inscricoesAbertas;
+    }
+
+    public Date getDataTermino() {
+        return dataTermino;
+    }
+
+    public void setDataTermino(Date dataTermino) {
+        if(dataTermino != null && dataTermino.getTime() > this.dataInicio.getTime()){
+            this.dataTermino = dataTermino;
+        }
     }
 
     public Map<String, Object> getAtividadesUid() {
@@ -96,7 +128,7 @@ public class Evento {
     }
 
     public void setDataInicio(Date dataInicio) {
-        this.dataInicio = validarDataInicio(dataInicio);
+        this.dataInicio = validarData(dataInicio);
     }
 
     public static String validarNome(String nome){
@@ -120,11 +152,11 @@ public class Evento {
         return local;
     }
 
-    public static Date validarDataInicio(Date dataInicio){
-        if(dataInicio == null){
-            throw new IllegalArgumentException("Data de inicio nula");
+    public static Date validarData(Date data){
+        if(data == null){
+            throw new IllegalArgumentException("Data nula");
         }
-        return dataInicio;
+        return data;
     }
 
     public Map<String, Object> toMap(){
@@ -136,7 +168,9 @@ public class Evento {
         map.put("tipo", tipo);
         map.put("local", local.toMap());
         map.put("data_inicio", dataInicio.getTime());
+        map.put("data_termino", dataTermino != null ? dataTermino.getTime() : null);
         map.put("publicado", publicado);
+        map.put("inscricoes_abertas", inscricoesAbertas);
         map.put("atividades", atividadesUid);
 
         return map;
@@ -152,7 +186,9 @@ public class Evento {
         evento.setTipo((String) map.get("tipo"));
         evento.setLocal((Local) map.get("local"));
         evento.setDataInicio((Date) map.get("data_inicio"));
+        evento.setDataTermino((Date) map.get("data_termino"));
         evento.publicado = (boolean) map.get("publicado");
+        evento.inscricoesAbertas = (boolean) map.get("inscricoes_abertas");
         Map<String, Object> atividades = (Map<String, Object>) map.get("atividades");
         evento.atividadesUid = atividades == null ? new HashMap<>() : atividades;
 

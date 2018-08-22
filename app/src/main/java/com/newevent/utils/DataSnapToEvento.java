@@ -19,6 +19,9 @@ public class DataSnapToEvento {
         map.put("nome", d.child("nome").getValue());
         map.put("tipo", d.child("tipo").getValue());
         map.put("data_inicio", new Date((Long) d.child("data_inicio").getValue()));
+        map.put("data_termino", d.child("data_termino").exists() ?
+                new Date((Long) d.child("data_termino").getValue()) : null);
+        map.put("inscricoes_abertas", d.child("inscricoes_abertas").getValue());
         map.put("local", getlocal(d.child("local")));
         map.put("publicado", d.child("publicado").getValue());
         map.put("atividades", getAtividadesUid(d.child("atividades")));

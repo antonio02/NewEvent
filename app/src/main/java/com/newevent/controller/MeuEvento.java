@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.newevent.R;
 import com.newevent.dao.evento.GetEventoRealtime;
@@ -46,12 +47,12 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
     private Button btnGerarCupons;
     private LinearLayout btnsFinalizarCancelar;
 
-
     private String eventoUid;
     private Evento evento;
     private GetEventoRealtime getEvento;
 
     private Local local;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +63,13 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
         inicializarViews();
     }
 
+
     @Override
     protected void onDestroy() {
         getEvento.stop();
         super.onDestroy();
     }
+
 
     @Override
     public void onUpdate(Evento evento) {
@@ -76,14 +79,17 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
         listarAtividades();
     }
 
+
     @Override
     public void onDelete() {
         finish();
     }
 
+
     private void listarAtividades() {
 
     }
+
 
     private void mostrarDadosDoEvento() {
 
@@ -101,6 +107,7 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
         mostrarDadosDoLocal();
     }
 
+
     private void mostrarDadosDoLocal() {
         txtEnderecoLocalEvento.setText(local.getEndereco());
         txtBairroLocalEvento.setText(local.getBairro());
@@ -109,10 +116,25 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
         txtComplementoLocalEvento.setText(local.getComplemento());
     }
 
+
     public void abrirCriarAtividade(View view) {
         Intent it = new Intent(this, CriarAtividade.class);
         it.putExtra("evento_uid", eventoUid);
         startActivity(it);
+    }
+
+
+    public void abrirGerarCupons(View view) {
+
+        if (evento == null) {
+            Toast.makeText(this, "Evento não carregado", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent it = new Intent(this, CadastrarCupom.class);
+        it.putExtra("evento_uid", evento.getUid());
+        startActivity(it);
+
     }
 
     public void abilitarEdicao(View view) {
@@ -133,6 +155,7 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
     public void finalizarEdicao(View view) {
     }
 
+
     public void cancelarEdicao(View view) {
 
         btnsFinalizarCancelar.setVisibility(View.GONE);
@@ -149,6 +172,7 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
 
         mostrarDadosDoEvento();
     }
+
 
     private void atribuirEscutadorEmCardLocal() {
         cardLocal.setClickable(true);
@@ -208,6 +232,7 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
         });
     }
 
+
     private void atribuirEscutadorEmEdDataInicio() {
         edDataInicioEvento.setOnClickListener((view) -> {
             final Calendar calendario = Calendar.getInstance();
@@ -236,6 +261,7 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
         });
     }
 
+
     private void carregarEvento() {
         if(getIntent().hasExtra("evento_uid")){
             eventoUid = getIntent().getStringExtra("evento_uid");
@@ -246,6 +272,7 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
         }
         finish();
     }
+
 
     private void inicializarViews() {
         edTipoEvento = findViewById(R.id.edtxt_meuevento_tipo);
@@ -266,7 +293,4 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
         btnsFinalizarCancelar = findViewById(R.id.buttons_finalizar_cancelar);
     }
 
-    public void abrirGerarCupons(View view) {
-
-    }
 }

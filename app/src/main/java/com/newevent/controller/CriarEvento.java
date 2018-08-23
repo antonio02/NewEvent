@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.newevent.R;
 import com.newevent.model.Local;
 import com.newevent.usecase.CriarNovoEvento;
+import com.newevent.usecase.UseCaseOnCompleteListener;
 import com.newevent.utils.CriarLocalValidador;
 import com.newevent.utils.UsuarioUtils;
 
@@ -22,7 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class CriarEvento extends AppCompatActivity {
+public class CriarEvento extends AppCompatActivity implements UseCaseOnCompleteListener{
 
     private EditText mEditNome;
     private EditText mEditTipo;
@@ -31,6 +32,8 @@ public class CriarEvento extends AppCompatActivity {
 
     private CriarNovoEvento criarEvento;
 
+    private final int CRIAR_EVENTO = 0;
+
     private Local local;
 
     @Override
@@ -38,7 +41,7 @@ public class CriarEvento extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criar_evento);
 
-        criarEvento = new CriarNovoEvento();
+        criarEvento = new CriarNovoEvento(CRIAR_EVENTO, this);
 
         if(!UsuarioUtils.isLogado()){
             finish();
@@ -54,41 +57,7 @@ public class CriarEvento extends AppCompatActivity {
         String tipo = mEditTipo.getText().toString();
         Date data = pegarData();
 
-        switch(criarEvento.criar(nome, tipo, local, data)){
-
-            case CriarNovoEvento.USUARIO_DESLOGADO:
-                finish();
-                break;
-
-            case CriarNovoEvento.NOME_DO_EVENTO_INVALIDO:
-                mEditNome.setError("Nome vazio ou menor que 6 caracteres");
-                mEditNome.requestFocus();
-                break;
-
-            case CriarNovoEvento.TIPO_DE_EVENTO_INVALIDO:
-                mEditTipo.setError("Tipo vazio ou menor que 5 caracteres");
-                mEditTipo.requestFocus();
-                break;
-
-            case CriarNovoEvento.LOCAL_DO_EVENTO_INVALIDO:
-                Toast.makeText(this, "Local do evento vazio",
-                        Toast.LENGTH_SHORT).show();
-                break;
-
-            case CriarNovoEvento.DATA_INICIO_DO_EVENTO_INVALIDA:
-                Toast.makeText(this, "Data vazia ou invalida",
-                        Toast.LENGTH_SHORT).show();
-                break;
-
-            case CriarNovoEvento.DATA_DE_INICIO_MENOR_DATA_MINIMA_CRIACAO:
-                Toast.makeText(this, "A data precisa ter pelo menos 6 horas para o inicio do evento",
-                        Toast.LENGTH_LONG).show();
-                break;
-
-            case CriarNovoEvento.SALVO:
-                finish();
-                break;
-        }
+        criarEvento.criar(nome, tipo, local, data);
 
     }
 
@@ -205,4 +174,44 @@ public class CriarEvento extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onComplete(int resultCode, int requestCode) {
+        if(requestCode == CRIAR_EVENTO){
+            switch(resultCode){
+
+                case CriarNovoEvento.USUARIO_DESLOGADO:
+                    finish();
+                    break;
+
+                case CriarNovoEvento.NOME_DO_EVENTO_INVALIDO:
+                    mEditNome.setError("Nome vazio ou menor que 6 caracteres");
+                    mEditNome.requestFocus();
+                    break;
+
+                case CriarNovoEvento.TIPO_DE_EVENTO_INVALIDO:
+                    mEditTipo.setError("Tipo vazio ou menor que 5 caracteres");
+                    mEditTipo.requestFocus();
+                    break;
+
+                case CriarNovoEvento.LOCAL_DO_EVENTO_INVALIDO:
+                    Toast.makeText(this, "Local do evento vazio",
+                            Toast.LENGTH_SHORT).show();
+                    break;
+
+                case CriarNovoEvento.DATA_INICIO_DO_EVENTO_INVALIDA:
+                    Toast.makeText(this, "Data vazia ou invalida",
+                            Toast.LENGTH_SHORT).show();
+                    break;
+
+                case CriarNovoEvento.DATA_DE_INICIO_MENOR_DATA_MINIMA_CRIACAO:
+                    Toast.makeText(this, "A data precisa ter pelo menos 6 horas para o inicio do evento",
+                            Toast.LENGTH_LONG).show();
+                    break;
+
+                case CriarNovoEvento.SALVO:
+                    finish();
+                    break;
+            }
+        }
+    }
 }

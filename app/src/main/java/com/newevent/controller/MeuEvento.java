@@ -1,5 +1,7 @@
 package com.newevent.controller;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import com.newevent.model.Local;
 import com.newevent.utils.UidUtil;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
 public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeListener {
@@ -121,7 +124,31 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
     }
 
     private void atribuirEscutadorEmEdData() {
+        edDataInicioEvento.setOnClickListener((view) -> {
+            final Calendar calendario = Calendar.getInstance();
+            int mAno = calendario.get(Calendar.YEAR);
+            int mMes = calendario.get(Calendar.MONTH);
+            int mDia = calendario.get(Calendar.DAY_OF_MONTH);
+            int mHora = calendario.get(Calendar.HOUR_OF_DAY);
+            int mMinuto = calendario.get(Calendar.MINUTE);
 
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                    (view1, hour, minute) -> {
+                        calendario.set(Calendar.HOUR_OF_DAY, hour);
+                        calendario.set(Calendar.MINUTE, minute);
+                        edDataInicioEvento.setText(new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
+                                Locale.getDefault()).format(calendario.getTime()));
+                    }, mHora, mMinuto, true);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                    (datePicker, year, month, day) -> {
+                        calendario.set(year, month, day);
+                        timePickerDialog.show();
+                    }, mAno, mMes, mDia);
+
+            datePickerDialog.getDatePicker().setMinDate(calendario.getTimeInMillis());
+            datePickerDialog.show();
+        });
     }
 
     public void finalizarEdicao(View view) {

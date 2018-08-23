@@ -104,11 +104,13 @@ public class RealizarInscricao {
                                 if(DataUtil.getAtual().getTime() >
                                         new Date((Long) d.child("data_validade").getValue()).getTime()){
                                     listener.onComplete(CUPOM_VENCIDO, requestCode);
+                                    return;
                                 } else {
                                     calcularValorTotal(((Long) d.child("porcentagem").getValue()).intValue());
                                 }
                             } else {
                                 listener.onComplete(CUPOM_NAO_EXISTE, requestCode);
+                                return;
                             }
                         }
                     }

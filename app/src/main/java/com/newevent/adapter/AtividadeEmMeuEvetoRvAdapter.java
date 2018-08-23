@@ -14,6 +14,7 @@ import com.newevent.dao.atividade.interfaces.GetAtividadesDoEventoRealTimeListen
 import com.newevent.model.Atividade;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AtividadeEmMeuEvetoRvAdapter
@@ -30,6 +31,7 @@ public class AtividadeEmMeuEvetoRvAdapter
     public AtividadeEmMeuEvetoRvAdapter(Context contexto, String eventoUid) {
         this.contexto = contexto;
         this.eventoUid = eventoUid;
+        atividades = new ArrayList<>();
         getAtividades = new GetAtividadesDoEventoRealtime(eventoUid, this);
     }
 

@@ -13,6 +13,7 @@ import com.newevent.dao.evento.GetEventoRealtime;
 import com.newevent.dao.evento.interfaces.GetEventoRealtimeListener;
 import com.newevent.model.Evento;
 import com.newevent.usecase.CriarNovaAtividade;
+import com.newevent.usecase.UseCaseOnCompleteListener;
 import com.newevent.utils.UidUtil;
 
 import java.text.ParseException;
@@ -21,7 +22,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class CriarAtividade extends AppCompatActivity implements GetEventoRealtimeListener {
+public class CriarAtividade extends AppCompatActivity
+        implements GetEventoRealtimeListener, UseCaseOnCompleteListener {
 
     private EditText nomeAtividade;
     private EditText tipoAtividade;
@@ -34,13 +36,15 @@ public class CriarAtividade extends AppCompatActivity implements GetEventoRealti
     private CriarNovaAtividade criarAtividade;
     private GetEventoRealtime getEvento;
 
+    private final int CRIAR_EVENTO = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criar_atividade);
 
-        criarAtividade = new CriarNovaAtividade();
+        criarAtividade = new CriarNovaAtividade(CRIAR_EVENTO, this);
 
         pegarEvento();
         inicializarViews();
@@ -84,63 +88,7 @@ public class CriarAtividade extends AppCompatActivity implements GetEventoRealti
         Date dataInicio = pegarData(dataInicioAtividade);
         Date dataFim = pegarData(dataFimAtividade);
 
-        switch (criarAtividade.criar(mEvento, nome, tipo, valor, dataInicio,
-                dataFim, maxInscricoes)) {
-
-            case CriarNovaAtividade.SALVO:
-                Toast.makeText(this, "Atividade inclusa ao evento",
-                        Toast.LENGTH_SHORT).show();
-                finish();
-                break;
-
-            case CriarNovaAtividade.NOME_INVALIDO:
-                nomeAtividade.setError("Nome nulo ou menor que 4 caracteres");
-                nomeAtividade.requestFocus();
-                break;
-
-            case CriarNovaAtividade.TIPO_INVALIDO:
-                tipoAtividade.setError("Tipo nulo ou menor que 4 caracteres");
-                tipoAtividade.requestFocus();
-                break;
-
-            case CriarNovaAtividade.VALOR_INVALIDO:
-                valorAtividade.setError("Valor nulo ou menor que 0");
-                valorAtividade.requestFocus();
-                break;
-
-            case CriarNovaAtividade.MAX_INCRICOES_INVALIDO:
-                maxInscricoesAtividade.setError("Numero de inscrições menor que 1");
-                maxInscricoesAtividade.requestFocus();
-                break;
-
-            case CriarNovaAtividade.DATA_INICIO_INVALIDA:
-                Toast.makeText(this,
-                        "Data de inicio vazia ou invalida",
-                        Toast.LENGTH_SHORT).show();
-                break;
-
-            case CriarNovaAtividade.DATA_DE_INICIO_MENOR_QUE_EVENTO:
-                Toast.makeText(this,
-                        "Data de inicio menor que o inicio do evento: " + new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
-                    Locale.getDefault()).format(mEvento.getDataInicio()),
-                        Toast.LENGTH_LONG).show();
-                break;
-
-            case CriarNovaAtividade.DATA_TERMINO_INVALIDA:
-                Toast.makeText(this,
-                        "Data de termino vazia ou menor que a data de inicio",
-                        Toast.LENGTH_SHORT).show();
-                break;
-
-            case CriarNovaAtividade.DATA_DE_TERMINO_MAIOR_QUE_EVENTO:
-                Toast.makeText(this,
-                        "Data de termino maior que o fim do evento: " + new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
-                                Locale.getDefault()).format(mEvento.getDataTermino()),
-                        Toast.LENGTH_SHORT).show();
-                break;
-
-        }
-
+        criarAtividade.criar(mEvento, nome, tipo, valor, dataInicio, dataFim, maxInscricoes);
     }
 
     public void cancelar(View view) {
@@ -221,5 +169,66 @@ public class CriarAtividade extends AppCompatActivity implements GetEventoRealti
     @Override
     public void onDelete() {
 
+    }
+
+    @Override
+    public void onComplete(int resultCode, int requestCode) {
+
+        if(requestCode == CRIAR_EVENTO){
+            switch (resultCode) {
+                case CriarNovaAtividade.SALVO:
+                    Toast.makeText(this, "Atividade inclusa ao evento",
+                            Toast.LENGTH_SHORT).show();
+                    finish();
+                    break;
+
+                case CriarNovaAtividade.NOME_INVALIDO:
+                    nomeAtividade.setError("Nome nulo ou menor que 4 caracteres");
+                    nomeAtividade.requestFocus();
+                    break;
+
+                case CriarNovaAtividade.TIPO_INVALIDO:
+                    tipoAtividade.setError("Tipo nulo ou menor que 4 caracteres");
+                    tipoAtividade.requestFocus();
+                    break;
+
+                case CriarNovaAtividade.VALOR_INVALIDO:
+                    valorAtividade.setError("Valor nulo ou menor que 0");
+                    valorAtividade.requestFocus();
+                    break;
+
+                case CriarNovaAtividade.MAX_INCRICOES_INVALIDO:
+                    maxInscricoesAtividade.setError("Numero de inscrições menor que 1");
+                    maxInscricoesAtividade.requestFocus();
+                    break;
+
+                case CriarNovaAtividade.DATA_INICIO_INVALIDA:
+                    makeShort("Data de inicio vazia ou invalida");
+                    break;
+
+                case CriarNovaAtividade.DATA_DE_INICIO_MENOR_QUE_EVENTO:
+                    makeShort("Data de inicio menor que o inicio do evento: " + new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
+                                    Locale.getDefault()).format(mEvento.getDataInicio()));
+                    break;
+
+                case CriarNovaAtividade.DATA_TERMINO_INVALIDA:
+                    makeShort("Data de termino vazia ou menor que a data de inicio");
+                    break;
+
+                case CriarNovaAtividade.DATA_DE_TERMINO_MAIOR_QUE_EVENTO:
+                    makeShort("Data de termino maior que o fim do evento: " + new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
+                                    Locale.getDefault()).format(mEvento.getDataTermino()));
+                    break;
+
+            }
+        }
+    }
+
+    private void makeShort(String text){
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    private void makeLong(String text){
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
     }
 }

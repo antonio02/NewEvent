@@ -26,66 +26,81 @@ public class CriarNovaAtividade {
     public static final int DATA_DE_INICIO_MENOR_QUE_EVENTO = 9;
     public static final int DATA_DE_TERMINO_MAIOR_QUE_EVENTO = 10;
 
+    private int requestCode;
+    private UseCaseOnCompleteListener listener;
+
     private AtividadeSalvarAtualizar atividadeSalvar;
     private EventoSalvarAtualizar eventoAtualizar;
 
-    public CriarNovaAtividade(){
-        atividadeSalvar = new AtividadeSalvarAtualizar();
-        eventoAtualizar = new EventoSalvarAtualizar();
+    public CriarNovaAtividade(int requestCode, UseCaseOnCompleteListener listener){
+        this.listener = listener;
+        this.requestCode = requestCode;
+        this.atividadeSalvar = new AtividadeSalvarAtualizar();
+        this.eventoAtualizar = new EventoSalvarAtualizar();
     }
 
-    public int criar(Evento evento, String nome, String tipo, Double valor,
+    public void criar(Evento evento, String nome, String tipo, Double valor,
                      Date dataInicio, Date dataTermino, int maxIncricoes){
 
         if(!UsuarioUtils.isLogado()){
-            return USUARIO_DESLOGADO;
+            listener.onComplete(USUARIO_DESLOGADO, requestCode);
+            return;
         }
 
-        if(UidUtil.eventoTemUid(evento)){
-            return EVENTO_INVALIDO;
+        if(!UidUtil.eventoTemUid(evento)){
+            listener.onComplete(EVENTO_INVALIDO, requestCode);
+            return;
         }
 
         try {
             Atividade.validarNome(nome);
         } catch (IllegalArgumentException e){
-            return NOME_INVALIDO;
+            listener.onComplete(NOME_INVALIDO, requestCode);
+            return;
         }
 
         try {
             Atividade.validarTipo(tipo);
         } catch (IllegalArgumentException e){
-            return TIPO_INVALIDO;
+            listener.onComplete(TIPO_INVALIDO, requestCode);
+            return;
         }
 
         try {
             Atividade.validarValor(valor);
         } catch (IllegalArgumentException e){
-            return VALOR_INVALIDO;
+            listener.onComplete(VALOR_INVALIDO, requestCode);
+            return;
         }
 
         try {
             Atividade.validarDataInicio(dataInicio);
         } catch (IllegalArgumentException e){
-            return DATA_INICIO_INVALIDA;
+            listener.onComplete(DATA_INICIO_INVALIDA, requestCode);
+            return;
         }
 
         if(evento.getDataInicio().getTime() > dataInicio.getTime()){
-            return DATA_DE_INICIO_MENOR_QUE_EVENTO;
+            listener.onComplete(DATA_DE_INICIO_MENOR_QUE_EVENTO, requestCode);
+            return;
         }
 
         if(dataTermino == null || dataTermino.getTime() < dataInicio.getTime()){
-            return DATA_TERMINO_INVALIDA;
+            listener.onComplete(DATA_TERMINO_INVALIDA, requestCode);
+            return;
         }
 
         if(evento.getDataTermino() != null &&
                 evento.getDataTermino().getTime() < dataTermino.getTime()){
-            return DATA_DE_TERMINO_MAIOR_QUE_EVENTO;
+            listener.onComplete(DATA_DE_TERMINO_MAIOR_QUE_EVENTO, requestCode);
+            return;
         }
 
         try {
             Atividade.validarMaxInscricoes(maxIncricoes);
         } catch (IllegalArgumentException e){
-            return MAX_INCRICOES_INVALIDO;
+            listener.onComplete(MAX_INCRICOES_INVALIDO, requestCode);
+            return;
         }
 
         Atividade atividade = new Atividade(evento.getUid(), nome, tipo,
@@ -96,7 +111,7 @@ public class CriarNovaAtividade {
         evento.addAtividadeUid(atividade.getUid());
         eventoAtualizar.put(evento);
 
-        return SALVO;
+        listener.onComplete(SALVO, requestCode);
 
     }
 }

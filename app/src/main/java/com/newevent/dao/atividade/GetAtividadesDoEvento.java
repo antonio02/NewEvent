@@ -42,7 +42,7 @@ public class GetAtividadesDoEvento {
                             atividades.add(DataSnapToAtividade.get(d));
                         }
                     }
-                    listener.onResult(atividades);
+                    listener.onGetFinish(atividades);
                 }
 
                 @Override

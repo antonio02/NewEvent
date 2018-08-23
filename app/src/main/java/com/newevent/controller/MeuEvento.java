@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.newevent.R;
+import com.newevent.adapter.AtividadeEmMeuEvetoRvAdapter;
 import com.newevent.dao.evento.GetEventoRealtime;
 import com.newevent.dao.evento.interfaces.GetEventoRealtimeListener;
 import com.newevent.model.Evento;
@@ -47,10 +50,12 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
     private Button btnGerarCupons;
     private LinearLayout btnsFinalizarCancelar;
 
+    private RecyclerView rvAtividades;
+    AtividadeEmMeuEvetoRvAdapter adapter;
+
     private String eventoUid;
     private Evento evento;
     private GetEventoRealtime getEvento;
-
     private Local local;
 
 
@@ -83,37 +88,6 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
     @Override
     public void onDelete() {
         finish();
-    }
-
-
-    private void listarAtividades() {
-
-    }
-
-
-    private void mostrarDadosDoEvento() {
-
-        SimpleDateFormat format = new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
-                Locale.getDefault());
-
-        edNomeEvento.setText(evento.getNome());
-        edTipoEvento.setText(evento.getTipo());
-        edDataInicioEvento.setText(format.format(evento.getDataInicio()));
-
-        if (evento.getDataTermino() != null) {
-            edDataFimEvento.setText(format.format(evento.getDataTermino()));
-        }
-
-        mostrarDadosDoLocal();
-    }
-
-
-    private void mostrarDadosDoLocal() {
-        txtEnderecoLocalEvento.setText(local.getEndereco());
-        txtBairroLocalEvento.setText(local.getBairro());
-        txtCidadeLocalEvento.setText(local.getCidade());
-        txtUfLocalEvento .setText(local.getUf());
-        txtComplementoLocalEvento.setText(local.getComplemento());
     }
 
 
@@ -171,6 +145,45 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
         local = evento.getLocal();
 
         mostrarDadosDoEvento();
+    }
+
+
+    private void listarAtividades() {
+        if(evento == null){
+            Toast.makeText(this, "Evento não carregou", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        rvAtividades = findViewById(R.id.rv_meuevento_atividades);
+        adapter = new AtividadeEmMeuEvetoRvAdapter(this, evento.getUid());
+        rvAtividades.setAdapter(adapter);
+        rvAtividades.setLayoutManager(new LinearLayoutManager(this));
+        rvAtividades.setHasFixedSize(true);
+    }
+
+
+    private void mostrarDadosDoEvento() {
+
+        SimpleDateFormat format = new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
+                Locale.getDefault());
+
+        edNomeEvento.setText(evento.getNome());
+        edTipoEvento.setText(evento.getTipo());
+        edDataInicioEvento.setText(format.format(evento.getDataInicio()));
+
+        if (evento.getDataTermino() != null) {
+            edDataFimEvento.setText(format.format(evento.getDataTermino()));
+        }
+
+        mostrarDadosDoLocal();
+    }
+
+
+    private void mostrarDadosDoLocal() {
+        txtEnderecoLocalEvento.setText(local.getEndereco());
+        txtBairroLocalEvento.setText(local.getBairro());
+        txtCidadeLocalEvento.setText(local.getCidade());
+        txtUfLocalEvento .setText(local.getUf());
+        txtComplementoLocalEvento.setText(local.getComplemento());
     }
 
 

@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="false"
-            android:hint="Locao do evento" />
+            android:hint="Local do evento" />
 
     </android.support.design.widget.TextInputLayout>
 

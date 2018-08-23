@@ -24,17 +24,8 @@ public class DataSnapToEvento {
         map.put("inscricoes_abertas", d.child("inscricoes_abertas").getValue());
         map.put("local", getlocal(d.child("local")));
         map.put("publicado", d.child("publicado").getValue());
-        map.put("atividades", getAtividadesUid(d.child("atividades")));
 
         return Evento.mapToEvento(map);
-    }
-
-    private static Map<String, Object> getAtividadesUid(DataSnapshot d) {
-        Map<String, Object> map = new HashMap<>();
-        for (DataSnapshot key: d.getChildren()) {
-            map.put(key.getKey(), true);
-        }
-        return map;
     }
 
     private static Local getlocal(DataSnapshot d) {

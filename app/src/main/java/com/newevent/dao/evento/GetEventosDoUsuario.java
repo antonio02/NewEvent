@@ -39,7 +39,7 @@ public class GetEventosDoUsuario {
                             eventos.add(DataSnapToEvento.get(d));
                         }
                     }
-                    listener.onResult(eventos);
+                    listener.onGetFinish(eventos);
                 }
 
                 @Override

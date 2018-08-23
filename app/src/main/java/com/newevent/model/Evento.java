@@ -10,7 +10,6 @@ public class Evento {
 
     private String uid;
     private String donoUid;
-    private Map<String, Object> atividadesUid;
 
     private String nome;
     private String tipo;
@@ -29,16 +28,11 @@ public class Evento {
         this.dataInicio = validarData(dataInicio);
         this.publicado = false;
         this.inscricoesAbertas = false;
-        this.atividadesUid = new HashMap<>();
     }
 
     public boolean publicar(){
 
         if(this.dataTermino == null){
-            return false;
-        }
-
-        if(this.atividadesUid.size() < 1){
             return false;
         }
 
@@ -59,10 +53,6 @@ public class Evento {
         if(dataTermino != null && dataTermino.getTime() > this.dataInicio.getTime()){
             this.dataTermino = dataTermino;
         }
-    }
-
-    public Map<String, Object> getAtividadesUid() {
-        return new HashMap<>(atividadesUid);
     }
 
     public String getNome() {
@@ -87,16 +77,6 @@ public class Evento {
 
     public String getUid() {
         return uid;
-    }
-
-    public void addAtividadeUid(String uid){
-        if(uid != null && !uid.isEmpty()){
-            atividadesUid.put(uid, true);
-        }
-    }
-
-    public void removerAtividade(String uid){
-        atividadesUid.remove(uid);
     }
 
     public void setUid(String uid) {
@@ -171,7 +151,6 @@ public class Evento {
         map.put("data_termino", dataTermino != null ? dataTermino.getTime() : null);
         map.put("publicado", publicado);
         map.put("inscricoes_abertas", inscricoesAbertas);
-        map.put("atividades", atividadesUid);
 
         return map;
     }
@@ -189,8 +168,6 @@ public class Evento {
         evento.setDataTermino((Date) map.get("data_termino"));
         evento.publicado = (boolean) map.get("publicado");
         evento.inscricoesAbertas = (boolean) map.get("inscricoes_abertas");
-        Map<String, Object> atividades = (Map<String, Object>) map.get("atividades");
-        evento.atividadesUid = atividades == null ? new HashMap<>() : atividades;
 
         return evento;
     }

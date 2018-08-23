@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface GetEventosDoUsuarioListener {
 
-    void onResult(List<Evento> eventos);
+    void onGetFinish(List<Evento> eventos);
 }

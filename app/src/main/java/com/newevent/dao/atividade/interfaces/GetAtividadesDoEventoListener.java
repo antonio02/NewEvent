@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface GetAtividadesDoEventoListener {
 
-    void onResult(List<Atividade> atividades);
+    void onGetFinish(List<Atividade> atividades);
 }

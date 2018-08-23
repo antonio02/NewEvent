@@ -16,31 +16,35 @@ public class PublicarEvento {
 
     private EventoSalvarAtualizar eventoSalvar;
 
-    public PublicarEvento(){
-        eventoSalvar = new EventoSalvarAtualizar();
+    private UseCaseOnCompleteListener listener;
+    private int requestCode;
+
+    public PublicarEvento(int requestCode, UseCaseOnCompleteListener listener){
+        this.requestCode = requestCode;
+        this.listener = listener;
+        this.eventoSalvar = new EventoSalvarAtualizar();
     }
 
-    public int publicar(Evento evento){
+    public void publicar(Evento evento){
 
         if(UidUtil.eventoTemUid(evento)){
-            return EVENTO_INVALIDO;
-        }
-
-        if(evento.getAtividadesUid().size() < 1){
-            return EVENTO_SEM_ATIVIDADES;
+            listener.onComplete(EVENTO_INVALIDO, requestCode);
+            return;
         }
 
         if(evento.getDataTermino() == null){
-            return EVENTO_SEM_DATA_TERMINO;
+            listener.onComplete(EVENTO_SEM_DATA_TERMINO, requestCode);
+            return;
         }
 
         if(DataUtil.getMinimaPublicarEvento().getTime() < evento.getDataInicio().getTime()){
-            return DATA_DE_INICIO_MENOR_DATA_MINIMA_PUBLICACAO;
+            listener.onComplete(DATA_DE_INICIO_MENOR_DATA_MINIMA_PUBLICACAO, requestCode);
+            return;
         }
 
         evento.publicar();
         eventoSalvar.put(evento);
-        return PUBLICADO;
+        listener.onComplete(PUBLICADO, requestCode);
 
     }
 }

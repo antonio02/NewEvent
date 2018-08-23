@@ -20,42 +20,53 @@ public class CriarNovoEvento {
 
     private EventoSalvarAtualizar eventoSalvar;
 
-    public CriarNovoEvento(){
+    private UseCaseOnCompleteListener listener;
+    private int requestCode;
+
+    public CriarNovoEvento(int requestCode, UseCaseOnCompleteListener listener){
+        this.requestCode = requestCode;
+        this.listener = listener;
         eventoSalvar = new EventoSalvarAtualizar();
     }
 
-    public int criar(String nome, String tipo, Local local, Date dataInicio){
+    public void criar(String nome, String tipo, Local local, Date dataInicio){
 
         if(!UsuarioUtils.isLogado()){
-            return USUARIO_DESLOGADO;
+            listener.onComplete(USUARIO_DESLOGADO, requestCode);
+            return;
         }
 
         try {
             Evento.validarNome(nome);
         } catch (IllegalArgumentException e){
-            return NOME_DO_EVENTO_INVALIDO;
+            listener.onComplete(NOME_DO_EVENTO_INVALIDO, requestCode);
+            return;
         }
 
         try {
             Evento.validarTipo(tipo);
         } catch (IllegalArgumentException e){
-            return TIPO_DE_EVENTO_INVALIDO;
+            listener.onComplete(TIPO_DE_EVENTO_INVALIDO, requestCode);
+            return;
         }
 
         try {
             Evento.validarLocal(local);
         } catch (IllegalArgumentException e){
-            return LOCAL_DO_EVENTO_INVALIDO;
+            listener.onComplete(LOCAL_DO_EVENTO_INVALIDO, requestCode);
+            return;
         }
 
         try {
             Evento.validarData(dataInicio);
         } catch (IllegalArgumentException e){
-            return DATA_INICIO_DO_EVENTO_INVALIDA;
+            listener.onComplete(DATA_INICIO_DO_EVENTO_INVALIDA, requestCode);
+            return;
         }
 
         if(DataUtil.getMinimaCriarEvento().getTime() > dataInicio.getTime()){
-            return DATA_DE_INICIO_MENOR_DATA_MINIMA_CRIACAO;
+            listener.onComplete(DATA_DE_INICIO_MENOR_DATA_MINIMA_CRIACAO, requestCode);
+            return;
         }
 
         Evento evento = new Evento(nome, tipo, local, dataInicio);
@@ -63,6 +74,6 @@ public class CriarNovoEvento {
 
         eventoSalvar.put(evento);
 
-        return SALVO;
+        listener.onComplete(SALVO, requestCode);
     }
 }

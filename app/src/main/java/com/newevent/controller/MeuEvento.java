@@ -1,7 +1,9 @@
 package com.newevent.controller;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import com.newevent.dao.evento.GetEventoRealtime;
 import com.newevent.dao.evento.interfaces.GetEventoRealtimeListener;
 import com.newevent.model.Evento;
 import com.newevent.model.Local;
+import com.newevent.utils.CriarLocalValidador;
 import com.newevent.utils.UidUtil;
 
 import java.text.SimpleDateFormat;
@@ -48,6 +51,8 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
     private Evento evento;
     private GetEventoRealtime getEvento;
 
+    private Local local;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +71,14 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
     @Override
     public void onUpdate(Evento evento) {
         this.evento = evento;
+        local = evento.getLocal();
         mostrarDadosDoEvento();
         listarAtividades();
+    }
+
+    @Override
+    public void onDelete() {
+        finish();
     }
 
     private void listarAtividades() {
@@ -75,34 +86,27 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
     }
 
     private void mostrarDadosDoEvento() {
-        if(evento == null) {
-            Toast.makeText(this, "Evento não carregou!", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-        Local local = evento.getLocal();
-        SimpleDateFormat format = new SimpleDateFormat("dd - MMMM - yyyy",
+        SimpleDateFormat format = new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
                 Locale.getDefault());
 
         edNomeEvento.setText(evento.getNome());
         edTipoEvento.setText(evento.getTipo());
-
-        txtEnderecoLocalEvento.setText(local.getEndereco());
-        txtBairroLocalEvento.setText(local.getBairro());
-        txtCidadeLocalEvento.setText(local.getCidade());
-        txtUfLocalEvento .setText(local.getUf());
-        txtComplementoLocalEvento.setText(local.getComplemento());
-
         edDataInicioEvento.setText(format.format(evento.getDataInicio()));
 
         if (evento.getDataTermino() != null) {
             edDataFimEvento.setText(format.format(evento.getDataTermino()));
         }
+
+        mostrarDadosDoLocal();
     }
 
-    @Override
-    public void onDelete() {
-        finish();
+    private void mostrarDadosDoLocal() {
+        txtEnderecoLocalEvento.setText(local.getEndereco());
+        txtBairroLocalEvento.setText(local.getBairro());
+        txtCidadeLocalEvento.setText(local.getCidade());
+        txtUfLocalEvento .setText(local.getUf());
+        txtComplementoLocalEvento.setText(local.getComplemento());
     }
 
     public void abrirCriarAtividade(View view) {
@@ -120,10 +124,89 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
         edTipoEvento.setFocusableInTouchMode(true);
         edNomeEvento.setFocusableInTouchMode(true);
 
-        atribuirEscutadorEmEdData();
+        atribuirEscutadorEmEdDataInicio();
+        atribuirEscutadorEmCardLocal();
     }
 
-    private void atribuirEscutadorEmEdData() {
+    private void atribuirEscutadorEmCardLocal() {
+        cardLocal.setClickable(true);
+        cardLocal.setOnClickListener( v -> {
+            View inflater = getLayoutInflater()
+                    .inflate(R.layout.dialog_adicionar_local, null);
+
+            EditText mEdtxtEndereco = inflater.findViewById(R.id.edtxt_local_endereco);
+            EditText mEdtxtBairro = inflater.findViewById(R.id.edtxt_local_bairro);
+            EditText mEdtxtComplemento = inflater.findViewById(R.id.edtxt_local_complemento);
+            EditText mEdtxtCidade = inflater.findViewById(R.id.edtxt_local_cidade);
+            EditText mEdtxtUf = inflater.findViewById(R.id.edtxt_local_uf);
+
+            AlertDialog mDialog = new AlertDialog.Builder(this).create();
+
+            mDialog.setView(inflater);
+            mDialog.setButton(DialogInterface.BUTTON_POSITIVE,"Ok", (dialog, which) -> {});
+            mDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancelar",
+                    (dialog, which) -> dialog.dismiss());
+            mDialog.show();
+            mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(view -> {
+                String endereco = mEdtxtEndereco.getText().toString();
+                String bairro = mEdtxtBairro.getText().toString();
+                String complemento = mEdtxtComplemento.getText().toString();
+                String cidade = mEdtxtCidade.getText().toString();
+                String uf = mEdtxtUf.getText().toString();
+
+                switch (CriarLocalValidador.validar(endereco, bairro, cidade, uf)){
+                    case CriarLocalValidador.ENDERECO_INVALIDO:
+                        mEdtxtEndereco.setError("Informe seu endereço");
+                        mEdtxtEndereco.requestFocus();
+                        break;
+
+                    case CriarLocalValidador.BAIRRO_INVALIDO:
+                        mEdtxtBairro.setError("Informe seu bairro");
+                        mEdtxtBairro.requestFocus();
+                        break;
+
+                    case CriarLocalValidador.CIDADE_INVALIDO:
+                        mEdtxtCidade.setError("Informe sua cidade");
+                        mEdtxtCidade.requestFocus();
+                        break;
+
+                    case CriarLocalValidador.UF_INVALIDO:
+                        mEdtxtUf.setError("Informe o estado");
+                        mEdtxtUf.requestFocus();
+                        break;
+
+                    case CriarLocalValidador.VALIDO:
+                        local = new Local(endereco, bairro, cidade, uf);
+                        local.setComplemento(complemento);
+                        mostrarDadosDoLocal();
+                        mDialog.dismiss();
+                        break;
+                }
+            });
+        });
+    }
+
+
+    public void finalizarEdicao(View view) {
+    }
+
+    public void cancelarEdicao(View view) {
+
+        btnsFinalizarCancelar.setVisibility(View.GONE);
+        btnNovaAtividade.setVisibility(View.VISIBLE);
+        btnEditar.setVisibility(View.VISIBLE);
+
+        edTipoEvento.setFocusable(false);
+        edNomeEvento.setFocusable(false);
+
+        edDataInicioEvento.setOnClickListener(null);
+        cardLocal.setOnClickListener(null);
+        local = evento.getLocal();
+
+        mostrarDadosDoEvento();
+    }
+
+    private void atribuirEscutadorEmEdDataInicio() {
         edDataInicioEvento.setOnClickListener((view) -> {
             final Calendar calendario = Calendar.getInstance();
             int mAno = calendario.get(Calendar.YEAR);
@@ -151,34 +234,15 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
         });
     }
 
-    public void finalizarEdicao(View view) {
-    }
-
-    public void cancelarEdicao(View view) {
-
-        btnsFinalizarCancelar.setVisibility(View.GONE);
-        btnNovaAtividade.setVisibility(View.VISIBLE);
-        btnEditar.setVisibility(View.VISIBLE);
-
-        edTipoEvento.setFocusable(false);
-        edNomeEvento.setFocusable(false);
-
-        mostrarDadosDoEvento();
-    }
-
     private void carregarEvento() {
         if(getIntent().hasExtra("evento_uid")){
             eventoUid = getIntent().getStringExtra("evento_uid");
-            if(!UidUtil.isValido(eventoUid)){
-                finish();
+            if(UidUtil.isValido(eventoUid)){
+                getEvento = new GetEventoRealtime(eventoUid, this);
                 return;
             }
-        } else {
-            finish();
-            return;
         }
-
-        getEvento = new GetEventoRealtime(eventoUid, this);
+        finish();
     }
 
     private void inicializarViews() {

@@ -5,15 +5,14 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.newevent.R;
 import com.newevent.dao.evento.GetEventoRealtime;
@@ -44,6 +43,7 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
     private CardView cardLocal;
     private Button btnNovaAtividade;
     private Button btnEditar;
+    private Button btnGerarCupons;
     private LinearLayout btnsFinalizarCancelar;
 
 
@@ -119,6 +119,7 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
 
         btnEditar.setVisibility(View.GONE);
         btnNovaAtividade.setVisibility(View.GONE);
+        btnGerarCupons.setVisibility(View.GONE);
         btnsFinalizarCancelar.setVisibility(View.VISIBLE);
 
         edTipoEvento.setFocusableInTouchMode(true);
@@ -126,6 +127,27 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
 
         atribuirEscutadorEmEdDataInicio();
         atribuirEscutadorEmCardLocal();
+    }
+
+
+    public void finalizarEdicao(View view) {
+    }
+
+    public void cancelarEdicao(View view) {
+
+        btnsFinalizarCancelar.setVisibility(View.GONE);
+        btnNovaAtividade.setVisibility(View.VISIBLE);
+        btnEditar.setVisibility(View.VISIBLE);
+        btnGerarCupons.setVisibility(View.VISIBLE);
+
+        edTipoEvento.setFocusable(false);
+        edNomeEvento.setFocusable(false);
+
+        edDataInicioEvento.setOnClickListener(null);
+        cardLocal.setOnClickListener(null);
+        local = evento.getLocal();
+
+        mostrarDadosDoEvento();
     }
 
     private void atribuirEscutadorEmCardLocal() {
@@ -186,26 +208,6 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
         });
     }
 
-
-    public void finalizarEdicao(View view) {
-    }
-
-    public void cancelarEdicao(View view) {
-
-        btnsFinalizarCancelar.setVisibility(View.GONE);
-        btnNovaAtividade.setVisibility(View.VISIBLE);
-        btnEditar.setVisibility(View.VISIBLE);
-
-        edTipoEvento.setFocusable(false);
-        edNomeEvento.setFocusable(false);
-
-        edDataInicioEvento.setOnClickListener(null);
-        cardLocal.setOnClickListener(null);
-        local = evento.getLocal();
-
-        mostrarDadosDoEvento();
-    }
-
     private void atribuirEscutadorEmEdDataInicio() {
         edDataInicioEvento.setOnClickListener((view) -> {
             final Calendar calendario = Calendar.getInstance();
@@ -259,7 +261,12 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
 
         btnNovaAtividade = findViewById(R.id.btn_meuevento_nova_atividade);
         btnEditar = findViewById(R.id.btn_meuevento_editar);
+        btnGerarCupons = findViewById(R.id.btn_meuevento_criar_cupons);
         cardLocal = findViewById(R.id.card_meuevento_local);
         btnsFinalizarCancelar = findViewById(R.id.buttons_finalizar_cancelar);
+    }
+
+    public void abrirGerarCupons(View view) {
+
     }
 }

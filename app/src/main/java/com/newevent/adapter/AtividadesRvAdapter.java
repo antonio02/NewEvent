@@ -68,11 +68,17 @@ implements GetAtividadesDoEventoRealTimeListener {
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+
+        TextView txtTipo;
         TextView txtNome;
+        TextView txtDataInicio;
+        TextView txtDataFim;
+        TextView txtQtdVagas;
+        TextView txtValor;
 
         ViewHolder(View itemView) {
             super(itemView);
-            txtNome = itemView.findViewById(R.id.txt_atividade_rv_cv_nome);
+            txtNome = itemView.findViewById(R.id.txt_item_atividade_nome);
         }
     }
 }

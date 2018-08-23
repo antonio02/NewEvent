@@ -22,7 +22,7 @@ public class DataSnapToAtividade {
         map.put("data_inicio", new Date((Long) d.child("data_inicio").getValue()));
         map.put("data_termino", new Date((Long) d.child("data_termino").getValue()));
         map.put("max_inscricoes", d.child("max_inscricoes").getValue());
-        map.put("inscricoes_abertas", d.child("inscricoes_abertas").getValue());
+        map.put("inscricoes_realizadas", d.child("inscricoes_realizadas").getValue());
 
         return Atividade.mapToAtividade(map);
 

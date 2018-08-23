@@ -29,8 +29,8 @@ public class Cupom {
             throw new IllegalArgumentException("Dono uid nulo ou invalido no construtor de cupom");
         }
 
-        if(codigo == null || codigo.trim().length() < 1){
-            throw new IllegalArgumentException("Codigo nulo ou invalido no construtor de cupom");
+        if(codigo == null || codigo.contains(" ") || codigo.length() < 1){
+            throw new IllegalArgumentException("Codigo nulo, com espaco ou invalido no construtor de cupom");
         }
 
         if(porcentagem < 1 || porcentagem > 100){
@@ -47,7 +47,7 @@ public class Cupom {
 
         this.eventoUid = eventoUid;
         this.donoUid = donoUid;
-        this.codigo = codigo;
+        this.codigo = codigo.toUpperCase();
         this.porcentagem = porcentagem;
         this.dataValidade = dataValidade;
         this.quantidade = quantidade;

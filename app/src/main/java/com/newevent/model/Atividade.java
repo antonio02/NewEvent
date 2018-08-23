@@ -18,7 +18,7 @@ public class Atividade {
     private Date dataInicio;
     private Date dataTermino;
     private int maxInscricoes;
-    private boolean inscricoesAbertas;
+    private int incricoesRealizadas;
 
     private Atividade(){};
 
@@ -32,7 +32,18 @@ public class Atividade {
         setDataInicio(dataInicio);
         setDataTermino(dataTermino);
         setMaxInscricoes(maxIncricoes);
-        this.inscricoesAbertas = false;
+    }
+
+    public int getIncricoesRealizadas() {
+        return incricoesRealizadas;
+    }
+
+    public boolean realizarIncricao(){
+        if(incricoesRealizadas < maxInscricoes){
+            incricoesRealizadas++;
+            return true;
+        }
+        return false;
     }
 
     public String getUid() {
@@ -45,10 +56,6 @@ public class Atividade {
 
     public String getEventoUid() {
         return eventoUid;
-    }
-
-    public boolean isInscricoesAbertas() {
-        return inscricoesAbertas;
     }
 
     public String getNome() {
@@ -73,10 +80,6 @@ public class Atividade {
 
     public int getMaxInscricoes() {
         return maxInscricoes;
-    }
-
-    public boolean getInscricoesAbertas() {
-        return inscricoesAbertas;
     }
 
     public void setUid(String uid) {
@@ -122,10 +125,6 @@ public class Atividade {
 
     public void setMaxInscricoes(int maxInscricoes) {
         this.maxInscricoes = validarMaxInscricoes(maxInscricoes);
-    }
-
-    public void setIncricoesAbertas(boolean incricoesAbertas) {
-        this.inscricoesAbertas = incricoesAbertas;
     }
 
     public static String validarNome(String nome){
@@ -189,7 +188,7 @@ public class Atividade {
         map.put("data_inicio", dataInicio.getTime());
         map.put("data_termino", dataTermino.getTime());
         map.put("max_inscricoes", maxInscricoes);
-        map.put("inscricoes_abertas", inscricoesAbertas);
+        map.put("inscricoes_realizadas", incricoesRealizadas);
 
         return map;
     }
@@ -208,7 +207,7 @@ public class Atividade {
         atividade.setDataInicio((Date) map.get("data_inicio"));
         atividade.setDataTermino((Date) map.get("data_termino"));
         atividade.setMaxInscricoes(((Long) map.get("max_inscricoes")).intValue());
-        atividade.setIncricoesAbertas((boolean) map.get("inscricoes_abertas"));
+        atividade.incricoesRealizadas = ((Long) map.get("inscricoes_realizadas")).intValue();
 
         return atividade;
     }

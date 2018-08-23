@@ -2,6 +2,7 @@ package com.newevent.controller;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.newevent.R;
+import com.newevent.adapter.AtividadesRvAdapter;
 import com.newevent.dao.evento.GetEventoRealtime;
 import com.newevent.dao.evento.interfaces.GetEventoRealtimeListener;
 import com.newevent.model.Evento;
@@ -32,6 +34,7 @@ public class DetalhesEvento extends AppCompatActivity implements GetEventoRealti
     private TextView txtDataFimEvento;
 
     private RecyclerView rvAtividades;
+    private AtividadesRvAdapter adapter;
 
     DatabaseReference eventosDb;
     private GetEventoRealtime getEvento;
@@ -45,7 +48,33 @@ public class DetalhesEvento extends AppCompatActivity implements GetEventoRealti
         eventosDb = FirebaseDatabase.getInstance().getReference("eventos");
         inicializarViews();
         pegarEvento();
-//        mostrarDadosDoEveto();
+        listarAtividades();
+    }
+
+    private void listarAtividades() {
+        rvAtividades = findViewById(R.id.rv_evento_publicado_atividades);
+        rvAtividades.setAdapter(new AtividadesRvAdapter(this));
+        rvAtividades.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getEvento.stop();
+    }
+
+    @Override
+    public void onUpdate(Evento evento) {
+        this.evento = evento;
+        mostrarDadosDoEveto();
+    }
+
+    @Override
+    public void onDelete() {
+
+    }
+
+    public void inscrever(View view) {
     }
 
     private void mostrarDadosDoEveto() {
@@ -79,23 +108,6 @@ public class DetalhesEvento extends AppCompatActivity implements GetEventoRealti
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        getEvento.stop();
-    }
-
-    @Override
-    public void onUpdate(Evento evento) {
-        this.evento = evento;
-        mostrarDadosDoEveto();
-    }
-
-    @Override
-    public void onDelete() {
-
-    }
-
     private void pegarEvento() {
         String eventoUid;
         if(getIntent().hasExtra("evento_uid")){
@@ -118,8 +130,5 @@ public class DetalhesEvento extends AppCompatActivity implements GetEventoRealti
         txtUfLocalEvento = findViewById(R.id.txt_evento_publico_local_uf);
         txtDataIniEvento = findViewById(R.id.txt_evento_publico_data_inicio);
         txtDataFimEvento = findViewById(R.id.txt_evento_publico_data_fim);
-    }
-
-    public void inscrever(View view) {
     }
 }

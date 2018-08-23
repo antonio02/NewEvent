@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.newevent.R;
 import com.newevent.dao.atividade.GetAtividadesDoEventoRealtime;
 import com.newevent.dao.atividade.interfaces.GetAtividadesDoEventoRealTimeListener;
@@ -43,7 +41,7 @@ implements GetAtividadesDoEventoRealTimeListener {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.atividades_rv_cardview, parent, false);
+                .inflate(R.layout.item_atividades_de_evento_publicado, parent, false);
         return new AtividadesRvAdapter.ViewHolder(v);
     }
 

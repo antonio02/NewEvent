@@ -101,7 +101,7 @@ public class Cupom {
         return map;
     }
 
-    public Cupom mapToCupom(Map<String, Object> map){
+    public static Cupom mapToCupom(Map<String, Object> map){
         Cupom cupom = new Cupom();
 
         cupom.uid = (String) map.get("uid");
@@ -109,9 +109,9 @@ public class Cupom {
         cupom.eventoUid = (String) map.get("evento_uid");
 
         cupom.codigo = (String) map.get("codigo");
-        cupom.porcentagem = (Integer) map.get("porcentagem");
+        cupom.porcentagem = ((Long) map.get("porcentagem")).intValue();
         cupom.dataValidade = (Date) map.get("data_validade");
-        cupom.quantidade = (Integer) map.get("quantidade");
+        cupom.quantidade = ((Long) map.get("quantidade")).intValue();
 
         return cupom;
     }

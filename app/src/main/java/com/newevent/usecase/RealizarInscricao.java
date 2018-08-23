@@ -7,7 +7,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.newevent.dao.cupom.GetCupomCodigo;
+import com.newevent.dao.cupom.interfaces.GetCupomCodigoListener;
 import com.newevent.model.Atividade;
+import com.newevent.model.Cupom;
 import com.newevent.model.Evento;
 import com.newevent.model.Inscricao;
 import com.newevent.model.ItemAtividade;
@@ -15,10 +18,11 @@ import com.newevent.utils.DataSnapToAtividade;
 import com.newevent.utils.DataUtil;
 import com.newevent.utils.UsuarioUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class RealizarInscricao {
+public class RealizarInscricao implements GetCupomCodigoListener{
 
     public static final int EVENTO_INCRICAO_FECHADA = 1;
     public static final int ATIVIDADE_COM_INCRICAO_CHEIA = 2;
@@ -31,17 +35,20 @@ public class RealizarInscricao {
     private Inscricao inscricao;
     private DatabaseReference atividadesBD;
     private DatabaseReference root;
-    private DatabaseReference cupomBD;
     private String cupomCodigo;
     private UseCaseOnCompleteListener listener;
     private int requestCode;
 
+    private GetCupomCodigo getCupom;
+
     public RealizarInscricao(int requestCode, UseCaseOnCompleteListener listener){
+        getCupom = new GetCupomCodigo(this);
         this.requestCode = requestCode;
         this.listener = listener;
         this.atividadesBD = FirebaseDatabase.getInstance().getReference("atividades");
         this.root = FirebaseDatabase.getInstance().getReference();
-        this.cupomBD = FirebaseDatabase.getInstance().getReference("cupons");
+        this.atividades = new ArrayList<>();
+        this.itens = new ArrayList<>();
     }
 
     public void Inscrever(Evento evento, List<String> atividadesUid, String cupomCodigo){
@@ -86,41 +93,8 @@ public class RealizarInscricao {
                 return;
             }
         }
-        if(cupomCodigo != null){
-            verificarCupom();
-        } else {
-            calcularValorTotal(0);
-        }
-    }
 
-    private void verificarCupom() {
-
-        cupomBD.orderByChild("codigo").equalTo(cupomCodigo)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot d: dataSnapshot.getChildren()){
-                            if(d.child("data_validade").getValue() != null){
-                                if(DataUtil.getAtual().getTime() >
-                                        new Date((Long) d.child("data_validade").getValue()).getTime()){
-                                    listener.onComplete(CUPOM_VENCIDO, requestCode);
-                                    return;
-                                } else {
-                                    calcularValorTotal(((Long) d.child("porcentagem").getValue()).intValue());
-                                }
-                            } else {
-                                listener.onComplete(CUPOM_NAO_EXISTE, requestCode);
-                                return;
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
+        getCupom.get(cupomCodigo, inscricao.getEventoUid());
     }
 
     private void calcularValorTotal(int porcentagem) {
@@ -147,4 +121,19 @@ public class RealizarInscricao {
     }
 
 
+    @Override
+    public void onGetResult(Cupom cupom) {
+
+        if(cupom == null){
+            listener.onComplete(CUPOM_NAO_EXISTE, requestCode);
+            return;
+        }
+
+        if(cupom.getDataValidade().getTime() < DataUtil.getAtual().getTime()){
+            listener.onComplete(CUPOM_VENCIDO, requestCode);
+            return;
+        }
+
+        calcularValorTotal(cupom.getPorcentagem());
+    }
 }

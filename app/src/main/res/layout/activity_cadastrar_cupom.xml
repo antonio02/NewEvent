@@ -3,10 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.CriarEvento">
+    tools:context=".controller.CadastrarCupom"
+    android:orientation="vertical"
+    android:gravity="center">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -16,29 +17,54 @@
         android:layout_marginStart="10dp">
 
         <EditText
-            android:id="@+id/edtxt_criar_evento_nome"
+            android:id="@+id/edtxt_cupom_codigo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nome do evento"
+            android:hint="Codigo do cupom"
             android:inputType="textCapWords" />
 
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp">
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/edtxt_criar_evento_tipo"
-            android:layout_width="match_parent"
+        <android.support.design.widget.TextInputLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Tipo de evento"
-            android:inputType="textCapSentences"/>
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp">
 
-    </android.support.design.widget.TextInputLayout>
+            <EditText
+                android:id="@+id/edtxt_cupom_porcetagem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Porcentagem do desconto"
+                android:inputType="number" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp">
+
+            <EditText
+                android:id="@+id/edtxt_cupom_quantidade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Quantidade de cupons"
+                android:inputType="number" />
+
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -48,29 +74,13 @@
         android:layout_marginStart="10dp">
 
         <EditText
-            android:id="@+id/edtxt_criar_evento_local"
+            android:id="@+id/edtxt_cupom_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="false"
-            android:hint="Local do evento" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp">
-
-        <EditText
-            android:id="@+id/edtxt_criar_evento_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="false"
-            android:hint="Selecione a data do evento" />
+            android:hint="Data de validade"
+            android:onClick="abrirDatePicker"/>
 
     </android.support.design.widget.TextInputLayout>
 

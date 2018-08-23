@@ -156,7 +156,7 @@ public class CriarEvento extends AppCompatActivity implements UseCaseOnCompleteL
 
             TimePickerDialog timePickerDialog = new TimePickerDialog(this,
                     (view1, hour, minute) -> {
-                        calendario.set(Calendar.HOUR, hour);
+                        calendario.set(Calendar.HOUR_OF_DAY, hour);
                         calendario.set(Calendar.MINUTE, minute);
                         mEditDataInicio.setText(new SimpleDateFormat("dd - MMMM - yyyy HH:mm",
                                 Locale.getDefault()).format(calendario.getTime()));

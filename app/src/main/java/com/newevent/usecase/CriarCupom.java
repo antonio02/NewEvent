@@ -24,13 +24,13 @@ public class CriarCupom {
 
     private CupomSalvarAtualizar cupomSalvar;
 
-    private CriarCupom(int requestCode, UseCaseOnCompleteListener listener){
+    public CriarCupom(int requestCode, UseCaseOnCompleteListener listener){
         this.listener = listener;
         this.requestCode = requestCode;
-        cupomSalvar = new CupomSalvarAtualizar();
+        this.cupomSalvar = new CupomSalvarAtualizar();
     }
 
-    private void criar(String eventoUid, String donoUid,
+    public void criar(String eventoUid, String donoUid,
                        String codigo, int porcetagem, Date dataValidade, int quantidade){
         if(!UidUtil.isValido(eventoUid)){
             listener.onComplete(EVENTO_INVALIDO, requestCode);
@@ -52,13 +52,13 @@ public class CriarCupom {
             return;
         }
 
-        if(dataValidade == null || dataValidade.getTime() < DataUtil.getAtual().getTime()){
-            listener.onComplete(DATA_INVALIDA, requestCode);
+        if(quantidade < 1){
+            listener.onComplete(QUANTIDADE_INVALIDA, requestCode);
             return;
         }
 
-        if(quantidade < 1){
-            listener.onComplete(QUANTIDADE_INVALIDA, requestCode);
+        if(dataValidade == null || dataValidade.getTime() < DataUtil.getAtual().getTime()){
+            listener.onComplete(DATA_INVALIDA, requestCode);
             return;
         }
 

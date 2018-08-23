@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -84,6 +85,10 @@ public class EventosRvAdapter extends RecyclerView.Adapter<EventosRvAdapter.Even
         holder.txtHora.setText("Início as "+ formatHora.format(eventos.get(position).getDataInicio()));
 
         atribuirEscultadorAoCard(holder, position);
+
+        if (UsuarioUtils.isLogado() && UsuarioUtils.getUid().equals(UsuarioUtils.getUid())) {
+            holder.btnInscrever.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void atribuirEscultadorAoCard(EventoHolder holder, int position) {
@@ -116,9 +121,11 @@ public class EventosRvAdapter extends RecyclerView.Adapter<EventosRvAdapter.Even
         TextView txtTipo;
         TextView txtData;
         TextView txtHora;
+        TextView btnInscrever;
 
         EventoHolder(View itemView) {
             super(itemView);
+            btnInscrever = itemView.findViewById(R.id.btn_eventos_rv_cv_increver);
             card = itemView.findViewById(R.id.card_eventos_rv);
             txtNome = itemView.findViewById(R.id.txt_eventos_rv_cv_nome);
             txtTipo = itemView.findViewById(R.id.txt_eventos_rv_cv_tipo);

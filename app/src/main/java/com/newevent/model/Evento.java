@@ -31,11 +31,6 @@ public class Evento {
     }
 
     public boolean publicar(){
-
-        if(this.dataTermino == null){
-            return false;
-        }
-
         this.publicado = true;
         this.inscricoesAbertas = true;
         return true;

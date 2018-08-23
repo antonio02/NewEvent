@@ -87,12 +87,6 @@ public class CriarNovaAtividade {
             return;
         }
 
-        if(evento.getDataTermino() != null &&
-                evento.getDataTermino().getTime() < dataTermino.getTime()){
-            listener.onComplete(DATA_DE_TERMINO_MAIOR_QUE_EVENTO, requestCode);
-            return;
-        }
-
         try {
             Atividade.validarMaxInscricoes(maxIncricoes);
         } catch (IllegalArgumentException e){

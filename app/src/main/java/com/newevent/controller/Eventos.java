@@ -20,6 +20,7 @@ import com.newevent.utils.UsuarioUtils;
 public class Eventos extends AppCompatActivity {
 
     private RecyclerView rv;
+    private EventosRvAdapter adapter;
 
     FirebaseAuth auth;
 
@@ -30,10 +31,17 @@ public class Eventos extends AppCompatActivity {
         biding();
     }
 
+    @Override
+    protected void onResume() {
+        adapter.notifyDataSetChanged();
+        super.onResume();
+    }
+
     private void biding() {
         auth = FirebaseAuth.getInstance();
         rv = findViewById(R.id.rv_eventos);
-        rv.setAdapter(new EventosRvAdapter(this));
+        adapter = new EventosRvAdapter(this);
+        rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
     }
 

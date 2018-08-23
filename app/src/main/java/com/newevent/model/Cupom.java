@@ -95,7 +95,7 @@ public class Cupom {
 
         map.put("codigo", codigo);
         map.put("porcentagem", porcentagem);
-        map.put("data_validade", dataValidade);
+        map.put("data_validade", dataValidade.getTime());
         map.put("quantidade", quantidade);
 
         return map;

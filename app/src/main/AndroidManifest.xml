@@ -23,6 +23,7 @@
         <activity android:name=".controller.CriarAtividade" />
         <activity android:name=".controller.DetalhesEvento" />
         <activity android:name=".controller.MeuEvento" />
+        <activity android:name=".controller.CadastrarCupom"></activity>
     </application>
 
 </manifest>

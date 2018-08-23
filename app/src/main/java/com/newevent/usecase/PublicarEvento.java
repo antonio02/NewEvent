@@ -26,10 +26,6 @@ public class PublicarEvento {
             return EVENTO_INVALIDO;
         }
 
-        if(evento.getAtividadesUid().size() < 1){
-            return EVENTO_SEM_ATIVIDADES;
-        }
-
         if(evento.getDataTermino() == null){
             return EVENTO_SEM_DATA_TERMINO;
         }

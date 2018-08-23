@@ -108,9 +108,6 @@ public class CriarNovaAtividade {
         atividade.setDonoUid(UsuarioUtils.getUid());
         atividadeSalvar.put(atividade);
 
-        evento.addAtividadeUid(atividade.getUid());
-        eventoAtualizar.put(evento);
-
         listener.onComplete(SALVO, requestCode);
 
     }

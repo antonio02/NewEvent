@@ -62,4 +62,13 @@ public class MeuEvento extends AppCompatActivity implements GetEventoRealtimeLis
     public void onDelete() {
         finish();
     }
+
+    public void finalizarEdicao(View view) {
+    }
+
+    public void cancelarEdicao(View view) {
+    }
+
+    public void abilitarEdicao(View view) {
+    }
 }

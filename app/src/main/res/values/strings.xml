@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">NewEvent</string>
+    <string name="inicio_btn_fazer_login">Fazer Login</string>
+    <string name="inicio_btn_ver_eventos">Ver eventos</string>
+    <string name="inicio_btn_criar_nova_conta">Criar nova conta</string>
+    <string name="cadastroConta_edtxt_email">Email</string>
+    <string name="cadastroConta_edtxt_senha">Senha</string>
+    <string name="cadastroConta_edtxt_confime_senha">Confirme a senha</string>
+    <string name="cadastroConta_btn_cancelar">Cancelar</string>
+    <string name="cadastroConta_btn_finalizar">Finalizar</string>
+    <string name="eventos_menu_logout">LogOut</string>
+    <string name="txt_button_inscricao_card_eventos">INSCREVER-SE</string>
+    <string name="eventos_menu_login">Login</string>
 </resources>

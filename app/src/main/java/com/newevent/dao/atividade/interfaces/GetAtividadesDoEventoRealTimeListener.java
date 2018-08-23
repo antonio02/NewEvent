@@ -4,7 +4,7 @@ import com.newevent.model.Atividade;
 
 import java.util.List;
 
-public interface GetAtividadesDoEventoListener {
+public interface GetAtividadesDoEventoRealTimeListener {
 
-    void onGetFinish(List<Atividade> atividades);
+    void onUpdate(List<Atividade> atividades);
 }

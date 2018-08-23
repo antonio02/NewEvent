@@ -8,30 +8,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.newevent.R;
+import com.newevent.dao.atividade.GetAtividadesDoEventoRealtime;
+import com.newevent.dao.atividade.interfaces.GetAtividadesDoEventoRealTimeListener;
 import com.newevent.model.Atividade;
-import com.newevent.utils.DataSnapToAtividade;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AtividadesRvAdapter extends RecyclerView.Adapter<AtividadesRvAdapter.ViewHolder> {
+public class AtividadesRvAdapter extends RecyclerView.Adapter<AtividadesRvAdapter.ViewHolder>
+implements GetAtividadesDoEventoRealTimeListener {
 
 
     private Context contexto;
-    DatabaseReference atividadesBD;
-    List<Atividade> atividades;
+    private List<Atividade> atividades;
+    private String eventoUid;
+    private GetAtividadesDoEventoRealtime getAtividades;
 
 
-    public AtividadesRvAdapter(Context contexto) {
+    public AtividadesRvAdapter(Context contexto, String eventoUid) {
         this.contexto = contexto;
-        atividadesBD = FirebaseDatabase.getInstance().getReference("atividades");
-        povoar();
+        atividades = new ArrayList<>();
+        getAtividades = new GetAtividadesDoEventoRealtime(eventoUid, this);
+    }
+
+    public void stop(){
+        getAtividades.stop();
     }
 
     @NonNull
@@ -55,31 +59,18 @@ public class AtividadesRvAdapter extends RecyclerView.Adapter<AtividadesRvAdapte
     }
 
 
-    private void povoar() {
-        atividades = new ArrayList<>();
-        atividadesBD.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                atividades.clear();
-                for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    atividades.add(DataSnapToAtividade.get(d));
-                }
-                notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+    @Override
+    public void onUpdate(List<Atividade> atividades) {
+        this.atividades = atividades;
+        notifyDataSetChanged();
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtNome;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             txtNome = itemView.findViewById(R.id.txt_atividade_rv_cv_nome);
         }

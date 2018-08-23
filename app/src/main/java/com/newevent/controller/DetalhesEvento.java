@@ -48,12 +48,16 @@ public class DetalhesEvento extends AppCompatActivity implements GetEventoRealti
         eventosDb = FirebaseDatabase.getInstance().getReference("eventos");
         inicializarViews();
         pegarEvento();
-        listarAtividades();
     }
 
     private void listarAtividades() {
+        if(evento == null){
+            Toast.makeText(this, "Evento não carregou", Toast.LENGTH_SHORT).show();
+            return;
+        }
         rvAtividades = findViewById(R.id.rv_evento_publicado_atividades);
-        rvAtividades.setAdapter(new AtividadesRvAdapter(this));
+        adapter = new AtividadesRvAdapter(this, evento.getUid());
+        rvAtividades.setAdapter(adapter);
         rvAtividades.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -61,12 +65,15 @@ public class DetalhesEvento extends AppCompatActivity implements GetEventoRealti
     protected void onDestroy() {
         super.onDestroy();
         getEvento.stop();
+        adapter.stop();
+
     }
 
     @Override
     public void onUpdate(Evento evento) {
         this.evento = evento;
         mostrarDadosDoEveto();
+        listarAtividades();
     }
 
     @Override

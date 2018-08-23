@@ -106,7 +106,7 @@ public class Atividade {
     }
 
     public void setValor(Double valor) {
-        this.valor = validarValor(valor);
+        this.valor = validarValor(valor + 0.0);
     }
 
     public void setDataInicio(Date dataInicio) {
@@ -143,7 +143,7 @@ public class Atividade {
     }
 
     public static double validarValor(Double valor){
-        if(valor == null || valor < 0){
+        if(valor < 0){
             throw new IllegalArgumentException("Valor nulo ou menor que 0");
         }
         return valor;
@@ -203,10 +203,11 @@ public class Atividade {
 
         atividade.setNome((String) map.get("nome"));
         atividade.setTipo((String) map.get("tipo"));
-        atividade.setValor((double) map.get("valor"));
+        atividade.setValor(map.get("valor") instanceof Double ?
+                (Double) map.get("valor") : ((Long) map.get("valor")).doubleValue());
         atividade.setDataInicio((Date) map.get("data_inicio"));
         atividade.setDataTermino((Date) map.get("data_termino"));
-        atividade.setMaxInscricoes((int) map.get("max_inscricoes"));
+        atividade.setMaxInscricoes(((Long) map.get("max_inscricoes")).intValue());
         atividade.setIncricoesAbertas((boolean) map.get("inscricoes_abertas"));
 
         return atividade;

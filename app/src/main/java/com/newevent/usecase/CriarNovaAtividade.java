@@ -1,8 +1,6 @@
 package com.newevent.usecase;
 
 import com.newevent.dao.atividade.AtividadeSalvarAtualizar;
-import com.newevent.dao.atividade.GetAtividadesDoEvento;
-import com.newevent.dao.atividade.interfaces.GetAtividadesDoEventoListener;
 import com.newevent.dao.evento.EventoSalvarAtualizar;
 import com.newevent.model.Atividade;
 import com.newevent.model.Evento;
@@ -10,7 +8,6 @@ import com.newevent.utils.UidUtil;
 import com.newevent.utils.UsuarioUtils;
 
 import java.util.Date;
-import java.util.List;
 
 public class CriarNovaAtividade {
 

@@ -3,13 +3,21 @@ package com.newevent.controller;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.newevent.R;
 import com.newevent.dao.evento.GetEventoRealtime;
 import com.newevent.dao.evento.interfaces.GetEventoRealtimeListener;
 import com.newevent.model.Evento;
+import com.newevent.model.Local;
 import com.newevent.utils.UidUtil;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class DetalhesEvento extends AppCompatActivity implements GetEventoRealtimeListener {
 
@@ -25,6 +33,7 @@ public class DetalhesEvento extends AppCompatActivity implements GetEventoRealti
 
     private RecyclerView rvAtividades;
 
+    DatabaseReference eventosDb;
     private GetEventoRealtime getEvento;
     private Evento evento;
 
@@ -33,8 +42,41 @@ public class DetalhesEvento extends AppCompatActivity implements GetEventoRealti
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhes_evento);
 
+        eventosDb = FirebaseDatabase.getInstance().getReference("eventos");
         inicializarViews();
         pegarEvento();
+//        mostrarDadosDoEveto();
+    }
+
+    private void mostrarDadosDoEveto() {
+        if(evento == null) {
+            Toast.makeText(this, "Deu Ruim", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Local local = evento.getLocal();
+        SimpleDateFormat format = new SimpleDateFormat("dd - MMMM - yyyy",
+                Locale.getDefault());
+
+        txtNomeEvento.setText(evento.getNome());
+        txtTipoEvento.setText(evento.getTipo());
+
+        txtEnderecoLocalEvento.setText(local.getEndereco());
+        txtBairroLocalEvento.setText(local.getBairro());
+        txtCidadeLocalEvento.setText(local.getCidade());
+        txtUfLocalEvento .setText(local.getUf());
+        txtComplementoLocalEvento.setText(local.getComplemento());
+
+        if (local.getComplemento() == null || local.getComplemento().isEmpty()) {
+            TextView textoAntesDoComplemento = findViewById(R.id.txt_evento_publico_compl_fixo);
+            textoAntesDoComplemento.setVisibility(View.GONE);
+        }
+
+        txtDataIniEvento.setText(format.format(evento.getDataInicio()));
+
+        if (evento.getDataTermino() != null) {
+            txtDataFimEvento.setText(format.format(evento.getDataTermino()));
+        }
     }
 
     @Override
@@ -46,6 +88,7 @@ public class DetalhesEvento extends AppCompatActivity implements GetEventoRealti
     @Override
     public void onUpdate(Evento evento) {
         this.evento = evento;
+        mostrarDadosDoEveto();
     }
 
     @Override
@@ -63,7 +106,6 @@ public class DetalhesEvento extends AppCompatActivity implements GetEventoRealti
             }
         }
         finish();
-        return;
     }
 
     private void inicializarViews() {
@@ -76,5 +118,8 @@ public class DetalhesEvento extends AppCompatActivity implements GetEventoRealti
         txtUfLocalEvento = findViewById(R.id.txt_evento_publico_local_uf);
         txtDataIniEvento = findViewById(R.id.txt_evento_publico_data_inicio);
         txtDataFimEvento = findViewById(R.id.txt_evento_publico_data_fim);
+    }
+
+    public void inscrever(View view) {
     }
 }
